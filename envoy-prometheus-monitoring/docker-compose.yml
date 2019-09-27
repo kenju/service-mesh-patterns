@@ -1,7 +1,7 @@
 version: '3.7'
 services:
   # front-envoy accepts requests from the users
-  # and proxy its request to http-backend.
+  # and proxy its request to http-backend-envoy
   front-envoy:
     build:
       context: './front'
@@ -14,6 +14,18 @@ services:
       - "8000:80"
       - "8001:8001" # admin
 
+  # http-backend-envoy is a front envoy of http-backend
+  http-backend-envoy:
+    build:
+      context: './http-backend-envoy'
+    networks:
+      envoymesh:
+        aliases:
+          - backend-envoy
+    ports:
+      - '8090:8090'
+      - '8091:8091' # admin
+
   # backend HTTP application
   # this is running behind front-envoy
   http-backend:
@@ -23,8 +35,6 @@ services:
       - '8081'
     networks:
       envoymesh:
-        # NOTE: aliases is important to round-robin even while scaling-out
-        # @see https://github.com/envoyproxy/envoy/tree/master/examples/front-proxy
         aliases:
           - backend
     deploy:

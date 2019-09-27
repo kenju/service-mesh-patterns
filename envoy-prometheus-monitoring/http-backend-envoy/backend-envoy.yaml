@@ -3,14 +3,14 @@ admin:
   address:
     socket_address:
       address: 0.0.0.0
-      port_value: 8001 # admin page
+      port_value: 8091 # admin page
 
 static_resources:
   listeners:
     - address:
         socket_address:
           address: 0.0.0.0
-          port_value: 80
+          port_value: 8090
       filter_chains:
         - filters:
             - name: envoy.http_connection_manager
@@ -21,26 +21,26 @@ static_resources:
                 route_config:
                   name: local_route
                   virtual_hosts:
-                    - name: backend-envoy
+                    - name: backend
                       domains:
                         - "*"
                       routes:
                         - match:
                             prefix: "/"
                           route:
-                            cluster: backend-envoy
+                            cluster: backend
                 http_filters:
                   - name: envoy.router
                     typed_config: {}
   clusters:
-    - name: backend-envoy
+    - name: backend
       connect_timeout: 0.25s
       type: strict_dns
       lb_policy: round_robin
       hosts:
         - socket_address:
-            address: backend-envoy
-            port_value: 8090
+            address: backend
+            port_value: 8081
 
     - name: statsd-exporter
       connect_timeout: 0.25s
@@ -61,4 +61,4 @@ stats_sinks:
     config:
       tcp_cluster_name: statsd-exporter
       # custom prefix for StatsdSink to override the default prefix
-      prefix: envoy-front
+      prefix: envoy-backend
