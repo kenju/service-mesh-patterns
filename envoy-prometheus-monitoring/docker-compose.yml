@@ -37,8 +37,8 @@ services:
   statsd_exporter:
     image: prom/statsd-exporter:latest
     ports:
-      - "9125:9125"
-      - "9102:9102"
+      - "9125:9125" # TCP/UDP address on which to receive statsd metric lines
+      - "9102:9102" # the web interface
 
   # prometheus pull metrics from statsd_exporter in every few seconds
   prometheus:
@@ -46,13 +46,13 @@ services:
     volumes:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
     ports:
-      - '9090:9090'
+      - '9090:9090' # the web interface
 
   # grafana uses prometheus as its data source to visualize metrics
   grafana:
     image: grafana/grafana
     ports:
-      - '3000:3000'
+      - '3000:3000' # the web interface
     volumes:
       - ./grafana/grafana.ini:/etc/grafana/grafana.ini
       - ./grafana/datasource.yaml:/etc/grafana/provisioning/datasources/datasource.yaml

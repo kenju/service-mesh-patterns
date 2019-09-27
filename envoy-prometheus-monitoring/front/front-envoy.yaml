@@ -51,8 +51,14 @@ static_resources:
             address: statsd_explorer
             port_value: 9125
 
+# Sink is an interface that takes stats data and translates into backend-specific format.
+# See "Stats architecture"
+# @see https://blog.envoyproxy.io/envoy-stats-b65c7f363342
+# @doc https://www.envoyproxy.io/docs/envoy/latest/api-v2/config/metrics/v2/stats.proto
 stats_sinks:
   - name: "envoy.statsd"
+    # @doc https://www.envoyproxy.io/docs/envoy/latest/api-v2/config/metrics/v2/stats.proto#envoy-api-msg-config-metrics-v2-statsdsink
     config:
       tcp_cluster_name: statsd-exporter
-      prefix: backend
+      # custom prefix for StatsdSink to override the default prefix
+      prefix: envoy-backend
