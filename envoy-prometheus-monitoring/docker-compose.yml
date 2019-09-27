@@ -1,10 +1,24 @@
 version: '3.7'
 services:
+  front-envoy:
+    build:
+      context: './front'
+    networks:
+      - envoymesh
+    expose:
+      - "80"
+      - "8001"
+    ports:
+      - "8000:80"
+      - "8001:8001" # admin
+
   http-backend:
     build:
       context: './http-backend'
     expose:
       - '8081'
+    ports:
+      - '8081:8081'
     networks:
       envoymesh:
         # NOTE: aliases is important to round-robin even while scaling-out
@@ -27,6 +41,12 @@ services:
     image: grafana/grafana
     ports:
       - '3000:3000'
+
+  statsd_exporter:
+    image: prom/statsd-exporter:latest
+    ports:
+      - "9125:9125"
+      - "9102:9102"
 
 networks:
   envoymesh: {}
