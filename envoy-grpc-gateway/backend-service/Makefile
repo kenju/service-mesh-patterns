@@ -2,7 +2,7 @@
 .EXPORT_ALL_VARIABLES:
 GO111MODULE=on
 
-NAME := envoy-grpc-sample
+NAME := backend-service
 VERSION := $(shell git describe --tags --abbrev=0)
 REVISION := $(shell git rev-parse --short HEAD)
 LDFLAGS := -s -w -X 'main.version=$(VERSION)' -X 'main.revision=$(REVISION)'
@@ -13,7 +13,7 @@ help:
 
 ## Run built binaries
 run: build
-	./envoy-grpc-sample
+	./backend-service
 
 ## Run tests
 test:

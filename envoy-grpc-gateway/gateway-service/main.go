@@ -2,7 +2,7 @@ package main
 
 import (
 	"context"
-	backend_services_v1 "github.com/kenju/envoy-grpc-sample/gateway-service/backend/services/v1"
+	backend_services_v1 "github.com/kenju/service-mesh-patterns/envoy-grpc-gateway/gateway-service/backend/services/v1"
 	"google.golang.org/grpc"
 	"net/http"
 	"os"

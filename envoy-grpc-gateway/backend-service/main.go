@@ -5,7 +5,7 @@ import (
 	"fmt"
 	grpc_middleware "github.com/grpc-ecosystem/go-grpc-middleware"
 	grpc_recovery "github.com/grpc-ecosystem/go-grpc-middleware/recovery"
-	backend_services_v1 "github.com/kenju/envoy-grpc-sample/backend-service/backend/services/v1"
+	backend_services_v1 "github.com/kenju/service-mesh-patterns/envoy-grpc-gateway/backend-service/backend/services/v1"
 	log "github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
