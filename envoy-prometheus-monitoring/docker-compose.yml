@@ -59,9 +59,12 @@ services:
   prometheus:
     image: prom/prometheus
     volumes:
-      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus/prometheus.yml:/etc/prometheus.yaml
     ports:
       - '9090:9090' # the web interface
+    command: "--config.file=/etc/prometheus.yaml"
+    networks:
+      - envoymesh
 
   # grafana uses prometheus as its data source to visualize metrics
   grafana:
@@ -73,7 +76,8 @@ services:
       - ./grafana/datasource.yaml:/etc/grafana/provisioning/datasources/datasource.yaml
       - ./grafana/dashboard.yaml:/etc/grafana/provisioning/dashboards/dashboard.yaml
       - ./grafana/dashboard.json:/etc/grafana/provisioning/dashboards/dashboard.json
-
+    networks:
+      - envoymesh
 
 networks:
   envoymesh: {}

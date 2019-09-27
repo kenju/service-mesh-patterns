@@ -8,6 +8,6 @@ scrape_configs:
     scrape_interval: 5s
     # @doc https://prometheus.io/docs/prometheus/latest/configuration/configuration/#static_config
     static_configs:
-      - targets: ['statsd_exporter:9102'] # host
+      - targets: ['statsd-exporter:9102'] # host
         labels:
           group: 'services'
