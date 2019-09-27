@@ -66,4 +66,4 @@ stats_sinks:
     config:
       tcp_cluster_name: statsd-exporter
       # custom prefix for StatsdSink to override the default prefix
-      prefix: envoy-backend
+      prefix: backend-envoy

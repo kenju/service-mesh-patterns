@@ -8,5 +8,5 @@ COPY ./front-envoy.yaml /etc/front-envoy.yaml
 # @doc https://www.envoyproxy.io/docs/envoy/latest/operations/cli
 CMD /usr/local/bin/envoy \
     --config-path /etc/front-envoy.yaml \
-    --service-cluster front-proxy \
-    --service-node front-proxy
+    --service-cluster front-envoy \
+    --service-node front-envoy

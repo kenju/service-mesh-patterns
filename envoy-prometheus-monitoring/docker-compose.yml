@@ -49,6 +49,7 @@ services:
     ports:
       - "9125:9125" # TCP/UDP address on which to receive statsd metric lines
       - "9102:9102" # the web interface
+    command: "--log.level='debug'"
 
   # prometheus pull metrics from statsd_exporter in every few seconds
   prometheus:
