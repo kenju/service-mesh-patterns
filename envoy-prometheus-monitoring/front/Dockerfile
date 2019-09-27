@@ -8,4 +8,4 @@ COPY ./front-envoy.yaml /etc/front-envoy.yaml
 CMD /usr/local/bin/envoy \
     -c /etc/front-envoy.yaml \
     --service-cluster front-proxy \
-    --service-node backend
+    --service-node front-proxy

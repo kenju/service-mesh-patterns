@@ -37,29 +37,19 @@ static_resources:
       connect_timeout: 0.25s
       type: strict_dns
       lb_policy: round_robin
-      http2_protocol_options: {}
-      load_assignment:
-        cluster_name: backend
-        endpoints:
-          - lb_endpoints:
-              - endpoint:
-                  address:
-                    socket_address:
-                      address: backend
-                      port_value: 8081
+      hosts:
+        - socket_address:
+            address: backend
+            port_value: 8081
+
     - name: statsd-exporter
       connect_timeout: 0.25s
       type: strict_dns
       lb_policy: round_robin
-      load_assignment:
-        cluster_name: backend
-        endpoints:
-          - lb_endpoints:
-              - endpoint:
-                  address:
-                    socket_address:
-                      address: statsd_exporter
-                      port_value: 9125
+      hosts:
+        - socket_address:
+            address: statsd_explorer
+            port_value: 9125
 
 stats_sinks:
   - name: "envoy.statsd"
