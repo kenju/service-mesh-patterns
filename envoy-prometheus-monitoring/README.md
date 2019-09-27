@@ -2,9 +2,9 @@
 
 The idea of this repository comes from https://github.com/dnivra26/envoy_monitoring
 
-## References
+## Architecture
 
-- statsd_exporter documentation https://github.com/prometheus/statsd_exporter
+![](/Users/kenju-wagatsuma/.ghq/src/github.com/kenju/service-mesh-patterns/envoy-prometheus-monitoring/envoy-prometheus-monitoring.jpg)
 
 ## Usage
 
@@ -59,3 +59,7 @@ Open http://localhost:3000
 Open http://localhost:9102
 
 > See https://github.com/prometheus/statsd_exporter
+
+## References
+
+- statsd_exporter documentation https://github.com/prometheus/statsd_exporter
