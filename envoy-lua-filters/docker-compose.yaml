@@ -1,0 +1,39 @@
+version: "3.7"
+services:
+
+  app:
+    build:
+      context: './app'
+    networks:
+      envoymesh:
+        aliases:
+          - app
+    expose:
+      - "80"
+    ports:
+      - "8080:80"
+
+  envoy:
+    build:
+      context: './envoy'
+    networks:
+      - envoymesh
+    expose:
+      - "80"
+      - "8001"
+    ports:
+      - "8000:80"
+      - "8001:8001"
+
+  log-service:
+    build:
+      context: './log-service'
+    networks:
+      - envoymesh
+    expose:
+      - "4567"
+    ports:
+      - "4567:4567"
+
+networks:
+  envoymesh: {}
