@@ -4,7 +4,7 @@ The idea of this repository comes from https://github.com/dnivra26/envoy_monitor
 
 ## Architecture
 
-![](/Users/kenju-wagatsuma/.ghq/src/github.com/kenju/service-mesh-patterns/envoy-prometheus-monitoring/envoy-prometheus-monitoring.jpg)
+![](./envoy-prometheus-monitoring.jpg)
 
 ## Usage
 
