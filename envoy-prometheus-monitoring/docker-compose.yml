@@ -1,0 +1,20 @@
+version: '3.7'
+services:
+  http-backend:
+    build:
+      context: './http-backend'
+    expose:
+      - '8081'
+    networks:
+      envoymesh:
+        # NOTE: aliases is important to round-robin even while scaling-out
+        # @see https://github.com/envoyproxy/envoy/tree/master/examples/front-proxy
+        aliases:
+          - backend
+    deploy:
+      # NOTE: use version 3+ and pass `--compatibility` option
+      # @see https://github.com/docker/compose/issues/5586#issuecomment-375580132
+      replicas: 3
+
+networks:
+  envoymesh: {}
