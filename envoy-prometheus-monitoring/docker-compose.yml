@@ -1,5 +1,7 @@
 version: '3.7'
 services:
+  # front-envoy accepts requests from the users
+  # and proxy its request to http-backend.
   front-envoy:
     build:
       context: './front'
@@ -12,6 +14,8 @@ services:
       - "8000:80"
       - "8001:8001" # admin
 
+  # backend HTTP application
+  # this is running behind front-envoy
   http-backend:
     build:
       context: './http-backend'
@@ -28,6 +32,15 @@ services:
       # @see https://github.com/docker/compose/issues/5586#issuecomment-375580132
       replicas: 3
 
+  # statsd_exporter export container's metrics in StatsD format
+  # @doc https://github.com/prometheus/statsd_exporter
+  statsd_exporter:
+    image: prom/statsd-exporter:latest
+    ports:
+      - "9125:9125"
+      - "9102:9102"
+
+  # prometheus pull metrics from statsd_exporter in every few seconds
   prometheus:
     image: prom/prometheus
     volumes:
@@ -35,6 +48,7 @@ services:
     ports:
       - '9090:9090'
 
+  # grafana uses prometheus as its data source to visualize metrics
   grafana:
     image: grafana/grafana
     ports:
@@ -45,11 +59,6 @@ services:
       - ./grafana/dashboard.yaml:/etc/grafana/provisioning/dashboards/dashboard.yaml
       - ./grafana/dashboard.json:/etc/grafana/provisioning/dashboards/dashboard.json
 
-  statsd_exporter:
-    image: prom/statsd-exporter:latest
-    ports:
-      - "9125:9125"
-      - "9102:9102"
 
 networks:
   envoymesh: {}

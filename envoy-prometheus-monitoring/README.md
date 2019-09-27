@@ -1,8 +1,10 @@
 # envoy-prometheus-monitoring
 
+The idea of this repository comes from https://github.com/dnivra26/envoy_monitoring
+
 ## References
 
-- https://github.com/dnivra26/envoy_monitoring
+- statsd_exporter documentation https://github.com/prometheus/statsd_exporter
 
 ## Usage
 
