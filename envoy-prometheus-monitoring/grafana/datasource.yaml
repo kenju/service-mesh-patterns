@@ -1,9 +1,12 @@
 apiVersion: 1
 
+# define one of data sources to use Prometheus
+#
+# @doc https://grafana.com/docs/administration/provisioning/#datasources
 datasources:
   - name: prometheus
     type: prometheus
     access: proxy
-    url: http://prometheus:9090
+    url: http://prometheus:9090 # see docker-compose's prometheus container and its port
     editable: true
-    isDefault:
+    isDefault: true
