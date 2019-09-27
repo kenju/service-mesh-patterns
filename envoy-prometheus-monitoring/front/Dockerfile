@@ -5,7 +5,8 @@ RUN apt-get update && apt-get -q install -y \
 
 COPY ./front-envoy.yaml /etc/front-envoy.yaml
 
+# @doc https://www.envoyproxy.io/docs/envoy/latest/operations/cli
 CMD /usr/local/bin/envoy \
-    -c /etc/front-envoy.yaml \
+    --config-path /etc/front-envoy.yaml \
     --service-cluster front-proxy \
     --service-node front-proxy

@@ -6,6 +6,6 @@ RUN apt-get update && apt-get -q install -y \
 COPY ./backend-envoy.yaml /etc/backend-envoy.yaml
 
 CMD /usr/local/bin/envoy \
-    -c /etc/backend-envoy.yaml \
+    --config-path /etc/backend-envoy.yaml \
     --service-cluster backend-envoy \
     --service-node backend-envoy

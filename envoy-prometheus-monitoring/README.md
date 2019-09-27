@@ -30,11 +30,17 @@ output:
 hello from http handler
 ```
 
-### envoy admin
+### front-envoy admin
 
 Open http://localhost:8001
 
 > See front-envoy.yaml
+
+### http-backend-envoy admin
+
+Open http://localhost:8091
+
+> See backend-envoy.yaml
 
 ### prometheus explorer
 
