@@ -44,7 +44,7 @@ services:
 
   # statsd_exporter export container's metrics in StatsD format
   # @doc https://github.com/prometheus/statsd_exporter
-  statsd_explorer:
+  statsd_exporter:
     image: prom/statsd-exporter:latest
     ports:
       - "9125:9125" # TCP/UDP address on which to receive statsd metric lines

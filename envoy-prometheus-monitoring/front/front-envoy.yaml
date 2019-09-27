@@ -53,7 +53,7 @@ static_resources:
       lb_policy: round_robin
       hosts:
         - socket_address:
-            address: statsd_explorer
+            address: statsd_exporter
             port_value: 9125
 
 # Sink is an interface that takes stats data and translates into backend-specific format.
