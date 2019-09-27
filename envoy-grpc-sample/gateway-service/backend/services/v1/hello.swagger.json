@@ -1,0 +1,67 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "backend/services/v1/hello.proto",
+    "version": "version not set"
+  },
+  "schemes": [
+    "http",
+    "https"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "paths": {
+    "/v1/hello": {
+      "get": {
+        "operationId": "Hello",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/v1HelloResponse"
+            }
+          }
+        },
+        "tags": [
+          "HelloService"
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "HelloResponseFailure": {
+      "type": "object",
+      "properties": {
+        "error_code": {
+          "type": "string"
+        },
+        "error_message": {
+          "type": "string"
+        }
+      }
+    },
+    "HelloResponseSuccess": {
+      "type": "object",
+      "properties": {
+        "status_code": {
+          "type": "string"
+        }
+      }
+    },
+    "v1HelloResponse": {
+      "type": "object",
+      "properties": {
+        "success": {
+          "$ref": "#/definitions/HelloResponseSuccess"
+        },
+        "failure": {
+          "$ref": "#/definitions/HelloResponseFailure"
+        }
+      }
+    }
+  }
+}

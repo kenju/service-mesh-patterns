@@ -1,0 +1,40 @@
+version: '3.7'
+services:
+
+  backend-service:
+    build:
+      context: './backend-service'
+    networks:
+      envoymesh:
+        # NOTE: aliases is important to round-robin even while scaling-out
+        # @see https://github.com/envoyproxy/envoy/tree/master/examples/front-proxy
+        aliases:
+          - backend
+    expose:
+      - '8080'
+
+  gateway-service:
+    build:
+      context: './gateway-service'
+    networks:
+      - envoymesh
+    ports:
+      - '3000:3000'
+    environment:
+      - ADDR=:3000
+      - PROXY_ADDR=front-proxy:8000
+
+  front-envoy:
+    build:
+      context: './front-envoy'
+    networks:
+      - envoymesh
+    ports:
+      - '8001:8001' # admin page
+    container_name: front-proxy
+    expose:
+      - '8000'
+      - '8001'
+
+networks:
+  envoymesh: {}
