@@ -23,5 +23,42 @@ services:
     ports:
       - '8080:8080'
 
+  # statsd_exporter export container's metrics in StatsD format
+  # @doc https://github.com/prometheus/statsd_exporter
+  statsd_exporter:
+    image: prom/statsd-exporter:latest
+    ports:
+      - "9125:9125" # TCP/UDP address on which to receive statsd metric lines
+      - "9102:9102" # the web interface
+    command: "--log.level='debug'"
+    networks:
+      envoymesh:
+        aliases:
+          - statsd-exporter
+
+  # prometheus pull metrics from statsd_exporter in every few seconds
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus.yaml
+    ports:
+      - '9090:9090' # the web interface
+    command: "--config.file=/etc/prometheus.yaml"
+    networks:
+      - envoymesh
+
+  # grafana uses prometheus as its data source to visualize metrics
+  grafana:
+    image: grafana/grafana
+    ports:
+      - '3000:3000' # the web interface
+    volumes:
+      - ./grafana/grafana.ini:/etc/grafana/grafana.ini
+      - ./grafana/datasource.yaml:/etc/grafana/provisioning/datasources/datasource.yaml
+      - ./grafana/dashboard.yaml:/etc/grafana/provisioning/dashboards/dashboard.yaml
+      - ./grafana/dashboard.json:/etc/grafana/provisioning/dashboards/dashboard.json
+    networks:
+      - envoymesh
+
 networks:
   envoymesh: {}
