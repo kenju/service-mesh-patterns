@@ -23,7 +23,6 @@ WORKDIR /go
 COPY --from=builder \
     /app/benchmark-service \
     /app/REVISION \
-    /app/protobuf-definitions/backend/services/v1/hello.proto \
     ./
 
 EXPOSE 8080

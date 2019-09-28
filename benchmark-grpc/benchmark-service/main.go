@@ -92,15 +92,9 @@ func checkRequest(serverAddr string) {
 }
 
 func startLoadTest(serverAddr string, writer io.Writer) {
-	importPath := getEnv("IMPORT_PATH", "protobuf-definitions/backend/services/v1")
-
 	report, err := runner.Run(
 		"backend.services.v1.HelloService.Hello",
 		serverAddr,
-		runner.WithProtoFile(
-			"hello.proto",
-			[]string{importPath},
-		),
 		runner.WithInsecure(true),
 		runner.WithTotalRequests(10), // TODO: modify as you like
 	)
