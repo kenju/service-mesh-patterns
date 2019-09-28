@@ -69,9 +69,3 @@ Open http://localhost:9090
 Open http://localhost:3000
 
 > See docker-compose.yaml
-
-## statsd_exporter 
-
-Open http://localhost:9102
-
-> See https://github.com/prometheus/statsd_exporter

@@ -6,6 +6,8 @@ services:
       context: './benchmark-service'
     networks:
       - envoymesh
+    expose:
+      - '8001'
     ports:
       - '8001:8001'
     environment:
@@ -24,19 +26,6 @@ services:
       - '8080'
     ports:
       - '8080:8080'
-
-  # statsd_exporter export container's metrics in StatsD format
-  # @doc https://github.com/prometheus/statsd_exporter
-  statsd_exporter:
-    image: prom/statsd-exporter:latest
-    ports:
-      - "9125:9125" # TCP/UDP address on which to receive statsd metric lines
-      - "9102:9102" # the web interface
-    command: "--log.level='debug'"
-    networks:
-      envoymesh:
-        aliases:
-          - statsd-exporter
 
   # prometheus pull metrics from statsd_exporter in every few seconds
   prometheus:

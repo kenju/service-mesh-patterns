@@ -2,9 +2,13 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"github.com/bojand/ghz/printer"
 	"github.com/bojand/ghz/runner"
 	backend_service "github.com/kenju/service-mesh-patterns/benchmark-grpc/benchmark-service/backend/services/v1"
+	"github.com/prometheus/client_golang/prometheus"
+	"github.com/prometheus/client_golang/prometheus/promauto"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"google.golang.org/grpc"
 	"io"
 	"log"
@@ -17,6 +21,14 @@ import (
 const (
 	defaultAddr = ":8001"
 	defaultLoadTestTargetAddr = "127.0.0.1:8080"
+	prometheusPrefix = "benchmark_server"
+)
+
+var (
+	counter = promauto.NewCounter(prometheus.CounterOpts{
+		Name: fmt.Sprintf("%s_counter", prometheusPrefix),
+		Help: "sample metrics for counter",
+	})
 )
 
 func main() {
@@ -24,12 +36,23 @@ func main() {
 
 	log.Printf("starting benchmarker at %s...\n", port)
 
-	http.HandleFunc("/", handler)
+	recordMetrics()
 
-	if err := http.ListenAndServe(port, nil); err != nil {
+	mux := http.NewServeMux()
+	mux.Handle("/metrics", promhttp.Handler())
+	mux.HandleFunc("/start", handler)
+
+	if err := http.ListenAndServe(port, mux); err != nil {
 		panic(err)
 	}
 
+}
+
+func recordMetrics() {
+	go func() {
+		counter.Inc()
+		time.Sleep(5 * time.Second)
+	}()
 }
 
 //--------------------------------
