@@ -53,7 +53,12 @@ var (
 	})
 	// Use Heatmap panel of Grafana
 	// @doc https://grafana.com/docs/features/panels/heatmap/
-	promGaugeResponseHistogram = promauto.NewHistogram(prometheus.HistogramOpts{
+	promHistLatencyDistribution = promauto.NewHistogram(prometheus.HistogramOpts{
+		Name: fmt.Sprintf("%s_latency_distribution", prometheusPrefix),
+		Help: "The distribution of latency",
+		Buckets: prometheus.LinearBuckets(20, 10, 10),
+	})
+	promHistResponseTime = promauto.NewHistogram(prometheus.HistogramOpts{
 		Name: fmt.Sprintf("%s_response_histogram", prometheusPrefix),
 		Help: "The histogram of response time.",
 		Buckets: prometheus.LinearBuckets(20, 10, 10),
@@ -157,8 +162,11 @@ func startLoadTest(serverAddr string, writer io.Writer) {
 	promGaugeSlowest.Set(durationToMs(report.Slowest))
 	promGaugeRPS.Set(report.Rps)
 	// @doc https://prometheus.io/docs/concepts/metric_types/#histogram
+	for _, dist := range report.LatencyDistribution {
+		promHistLatencyDistribution.Observe(durationToMs(dist.Latency))
+	}
 	for _, bucket := range report.Histogram {
-		promGaugeResponseHistogram.Observe(bucket.Frequency)
+		promHistResponseTime.Observe(bucket.Frequency)
 	}
 
 	// write response to writer
