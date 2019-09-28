@@ -10,9 +10,6 @@ services:
       - '8001:8001'
     environment:
       - LOAD_TEST_TARGET_ADDR=backend:8080
-      - PROTO_IMPORT_PATH=protobuf-definitions
-    volumes:
-      - ./protobuf-definitions:/app/protobuf-definitions
 
   backend-service:
     build:
