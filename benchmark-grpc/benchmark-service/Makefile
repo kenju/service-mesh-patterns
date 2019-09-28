@@ -56,7 +56,7 @@ fmt:
 
 ## Run server
 run-server:
-	PORT=127.0.0.1:8080 go run main.go
+	ADDR=127.0.0.1:8001 go run main.go
 
 ## Run client
 run-client:

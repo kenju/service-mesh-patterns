@@ -2,14 +2,16 @@ package main
 
 import (
 	"context"
-	"fmt"
+	"github.com/bojand/ghz/printer"
+	"github.com/bojand/ghz/runner"
+	backend_service "github.com/kenju/service-mesh-patterns/benchmark-grpc/benchmark-service/backend/services/v1"
 	"google.golang.org/grpc"
+	"io"
 	"log"
 	"net/http"
 	"os"
 	"strconv"
 	"time"
-	backend_service "github.com/kenju/service-mesh-patterns/benchmark-grpc/benchmark-service/backend/services/v1"
 )
 
 const (
@@ -60,12 +62,13 @@ func handler(w http.ResponseWriter, r *http.Request) {
 
 	serverAddr := getEnv("LOAD_TEST_TARGET_ADDR", defaultLoadTestTargetAddr)
 
-	loadTest(serverAddr)
+	// assertion to check connection to the target gRPC application
+	checkRequest(serverAddr)
 
-	fmt.Fprintf(w, fmt.Sprintf("sent gRPC load testing request to %s\n", serverAddr))
+	startLoadTest(serverAddr, w)
 }
 
-func loadTest(serverAddr string) {
+func checkRequest(serverAddr string) {
 	var opts []grpc.DialOption
 	opts = append(opts, grpc.WithInsecure())
 
@@ -87,4 +90,28 @@ func loadTest(serverAddr string) {
 	}
 
 	log.Printf("backend.Hello() message=%+v\n", message)
+}
+
+func startLoadTest(serverAddr string, writer io.Writer) {
+	report, err := runner.Run(
+		"backend.services.v1.HelloService.Hello",
+		serverAddr,
+		runner.WithProtoFile(
+			"hello.proto",
+			[]string{"/Users/kenju-wagatsuma/.ghq/src/github.com/kenju/service-mesh-patterns/protobuf-definitions"},
+		),
+		runner.WithDataFromFile("data.json"),
+		runner.WithInsecure(true),
+	)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	printer := printer.ReportPrinter{
+		Out: writer,
+		Report: report,
+	}
+
+	printer.Print("json")
 }

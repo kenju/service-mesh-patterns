@@ -11,7 +11,7 @@
 Send `GET /` to benchmark-service to start load testing:
 
 ```
-curl localhost:8001
+curl localhost:8001 | jq .
 ```
 
 ## Development
