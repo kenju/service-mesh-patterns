@@ -18,12 +18,7 @@
   "links": [],
   "panels": [
     {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "fill": 1,
-      "fillGradient": 0,
+      "cacheTimeout": null,
       "gridPos": {
         "h": 9,
         "w": 12,
@@ -31,83 +26,43 @@
         "y": 0
       },
       "id": 2,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 1,
-      "nullPointMode": "null",
+      "links": [],
       "options": {
-        "dataLinks": []
+        "fieldOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "defaults": {
+            "mappings": [],
+            "max": 100,
+            "min": 0,
+            "thresholds": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "override": {},
+          "values": false
+        },
+        "orientation": "auto",
+        "showThresholdLabels": false,
+        "showThresholdMarkers": false
       },
-      "percentage": false,
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
+      "pluginVersion": "6.3.6",
       "targets": [
         {
-          "expr": "backend_envoy_cluster_backend_external_upstream_rq_2xx",
+          "expr": "benchmark_server_count",
           "refId": "A"
         }
       ],
-      "thresholds": [],
       "timeFrom": null,
-      "timeRegions": [],
       "timeShift": null,
-      "title": "backend_envoy_cluster_backend_external_upstream_rq_2xx",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
+      "title": "ReqCount",
+      "type": "gauge"
     },
     {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "fill": 1,
-      "fillGradient": 0,
       "gridPos": {
         "h": 9,
         "w": 12,
@@ -115,6 +70,57 @@
         "y": 0
       },
       "id": 4,
+      "options": {
+        "fieldOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "defaults": {
+            "mappings": [],
+            "max": 100,
+            "min": 0,
+            "thresholds": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ],
+            "unit": "µs"
+          },
+          "override": {},
+          "values": false
+        },
+        "orientation": "auto",
+        "showThresholdLabels": false,
+        "showThresholdMarkers": false
+      },
+      "pluginVersion": "6.3.6",
+      "targets": [
+        {
+          "expr": "benchmark_server_rps",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "RPS",
+      "type": "gauge"
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "description": "AVG / Fastest / Slowest",
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 11,
+        "w": 24,
+        "x": 0,
+        "y": 9
+      },
+      "id": 6,
       "legend": {
         "avg": false,
         "current": false,
@@ -140,15 +146,18 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "backend_envoy_cluster_backend_external_upstream_rq_time{quantile=\"0.99\"}",
+          "expr": "benchmark_server_average",
+          "legendFormat": "AVG",
           "refId": "A"
         },
         {
-          "expr": "backend_envoy_cluster_backend_external_upstream_rq_time{quantile=\"0.9\"}",
+          "expr": "benchmark_server_fastest",
+          "legendFormat": "Fastest",
           "refId": "B"
         },
         {
-          "expr": "backend_envoy_cluster_backend_external_upstream_rq_time{quantile=\"0.5\"}",
+          "expr": "benchmark_server_slowest",
+          "legendFormat": "Slowest",
           "refId": "C"
         }
       ],
@@ -156,7 +165,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "rq_time",
+      "title": "Request",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -180,7 +189,7 @@
           "show": true
         },
         {
-          "format": "short",
+          "format": "µs",
           "label": null,
           "logBase": 1,
           "max": null,
@@ -201,7 +210,7 @@
     "list": []
   },
   "time": {
-    "from": "now-6h",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {
