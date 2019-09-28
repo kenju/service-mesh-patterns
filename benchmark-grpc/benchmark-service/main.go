@@ -24,10 +24,32 @@ const (
 	prometheusPrefix = "benchmark_server"
 )
 
+// See ghz documentation for each metrics explanation
+// @see https://ghz.sh/docs/output
 var (
-	counter = promauto.NewCounter(prometheus.CounterOpts{
-		Name: fmt.Sprintf("%s_counter", prometheusPrefix),
-		Help: "sample metrics for counter",
+	promGaugeCount = promauto.NewGauge(prometheus.GaugeOpts{
+		Name: fmt.Sprintf("%s_count", prometheusPrefix),
+		Help: "The total number of completed requests including successful and failed requests.",
+	})
+	promGaugeTotal = promauto.NewGauge(prometheus.GaugeOpts{
+		Name: fmt.Sprintf("%s_total", prometheusPrefix),
+		Help: "The total time spent running the test within ghz from start to finish. This is a single measurement from start of the test run to the completion of the final request of the test run.",
+	})
+	promGaugeAvg = promauto.NewGauge(prometheus.GaugeOpts{
+		Name: fmt.Sprintf("%s_average", prometheusPrefix),
+		Help: "The mathematical average computed by taking the sum of the individual response times of all requests and dividing it by the total number of requests.",
+	})
+	promGaugeFastest = promauto.NewGauge(prometheus.GaugeOpts{
+		Name: fmt.Sprintf("%s_fastest", prometheusPrefix),
+		Help: "The measurement of the fastest request.",
+	})
+	promGaugeSlowest = promauto.NewGauge(prometheus.GaugeOpts{
+		Name: fmt.Sprintf("%s_slowest", prometheusPrefix),
+		Help: "The measurement of the slowest request.",
+	})
+	promGaugeRPS = promauto.NewGauge(prometheus.GaugeOpts{
+		Name: fmt.Sprintf("%s_rps", prometheusPrefix),
+		Help: "Theoretical computed RPS computed by taking the total number of requests (successful and failed) and dividing it by the total duration of the test. That is: count / total.",
 	})
 )
 
@@ -36,11 +58,9 @@ func main() {
 
 	log.Printf("starting benchmarker at %s...\n", port)
 
-	recordMetrics()
-
 	mux := http.NewServeMux()
 	mux.Handle("/metrics", promhttp.Handler())
-	mux.HandleFunc("/start", handler)
+	mux.HandleFunc("/start", startHandler)
 
 	if err := http.ListenAndServe(port, mux); err != nil {
 		panic(err)
@@ -48,12 +68,6 @@ func main() {
 
 }
 
-func recordMetrics() {
-	go func() {
-		counter.Inc()
-		time.Sleep(5 * time.Second)
-	}()
-}
 
 //--------------------------------
 // utility
@@ -80,16 +94,16 @@ func getEnvAsInt(key string, defaultVal int) (int, error) {
 //--------------------------------
 // business logic
 //--------------------------------
-func handler(w http.ResponseWriter, r *http.Request) {
+func startHandler(w http.ResponseWriter, r *http.Request) {
 
 	serverAddr := getEnv("LOAD_TEST_TARGET_ADDR", defaultLoadTestTargetAddr)
 
-	// assertion to check connection to the target gRPC application
 	checkRequest(serverAddr)
 
 	startLoadTest(serverAddr, w)
 }
 
+// checkRequest is an assertion to check a connection to the target gRPC application.
 func checkRequest(serverAddr string) {
 	var opts []grpc.DialOption
 	opts = append(opts, grpc.WithInsecure())
@@ -115,6 +129,7 @@ func checkRequest(serverAddr string) {
 }
 
 func startLoadTest(serverAddr string, writer io.Writer) {
+	// exec load testing
 	report, err := runner.Run(
 		"backend.services.v1.HelloService.Hello",
 		serverAddr,
@@ -126,10 +141,22 @@ func startLoadTest(serverAddr string, writer io.Writer) {
 		log.Fatal(err)
 	}
 
+	// write report JSON output to buffer
+	promGaugeCount.Set(float64(report.Count))
+	promGaugeTotal.Set(durationToMs(report.Total))
+	promGaugeAvg.Set(durationToMs(report.Average))
+	promGaugeFastest.Set(durationToMs(report.Fastest))
+	promGaugeSlowest.Set(durationToMs(report.Slowest))
+	promGaugeRPS.Set(report.Rps)
+
+	// write response to writer
 	printer := printer.ReportPrinter{
 		Out: writer,
 		Report: report,
 	}
-
 	printer.Print("json")
+}
+
+func durationToMs(d time.Duration) float64 {
+	return float64(d / time.Millisecond)
 }
