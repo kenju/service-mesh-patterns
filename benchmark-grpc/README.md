@@ -1,5 +1,9 @@
 # benchmark-grpc
 
+# Architecture
+
+![](./grpc-benchmark.jpg)
+
 # Usage
 
 Run containers:
