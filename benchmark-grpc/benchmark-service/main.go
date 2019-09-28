@@ -51,6 +51,13 @@ var (
 		Name: fmt.Sprintf("%s_rps", prometheusPrefix),
 		Help: "Theoretical computed RPS computed by taking the total number of requests (successful and failed) and dividing it by the total duration of the test. That is: count / total.",
 	})
+	// Use Heatmap panel of Grafana
+	// @doc https://grafana.com/docs/features/panels/heatmap/
+	promGaugeResponseHistogram = promauto.NewHistogram(prometheus.HistogramOpts{
+		Name: fmt.Sprintf("%s_response_histogram", prometheusPrefix),
+		Help: "The histogram of response time.",
+		Buckets: prometheus.LinearBuckets(20, 10, 10),
+	})
 )
 
 func main() {
@@ -142,12 +149,17 @@ func startLoadTest(serverAddr string, writer io.Writer) {
 	}
 
 	// write report JSON output to buffer
+	// TODO: this logic can be written as `prometheus` format in ghz library
 	promGaugeCount.Set(float64(report.Count))
 	promGaugeTotal.Set(durationToMs(report.Total))
 	promGaugeAvg.Set(durationToMs(report.Average))
 	promGaugeFastest.Set(durationToMs(report.Fastest))
 	promGaugeSlowest.Set(durationToMs(report.Slowest))
 	promGaugeRPS.Set(report.Rps)
+	// @doc https://prometheus.io/docs/concepts/metric_types/#histogram
+	for _, bucket := range report.Histogram {
+		promGaugeResponseHistogram.Observe(bucket.Frequency)
+	}
 
 	// write response to writer
 	printer := printer.ReportPrinter{
