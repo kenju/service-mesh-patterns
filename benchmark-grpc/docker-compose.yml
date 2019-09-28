@@ -1,6 +1,14 @@
 version: '3.7'
 services:
 
+  benchmark-service:
+    build:
+      context: './benchmark-service'
+    networks:
+      - envoymesh
+    ports:
+      - '8001:8001'
+
   backend-service:
     build:
       context: './backend-service'
