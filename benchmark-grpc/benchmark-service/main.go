@@ -92,8 +92,8 @@ func checkRequest(serverAddr string) {
 }
 
 func startLoadTest(serverAddr string, writer io.Writer) {
-	importPath := "protobuf-definitions/backend/services/v1" // NOTE: a symlink to ../protobuf-definitions
-
+	importPath := "protobuf-definitions/backend/services/v1"
+	
 	report, err := runner.Run(
 		"backend.services.v1.HelloService.Hello",
 		serverAddr,

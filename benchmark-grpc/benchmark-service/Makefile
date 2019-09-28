@@ -41,12 +41,12 @@ update:
 ## Compile protoc
 protoc:
 	protoc \
-		-I ../protobuf-definitions \
+		-I ./protobuf-definitions \
 		-I /usr/local/include \
 		-I ${GOPATH}/src \
 		-I ${GOPATH}/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
 		--go_out=plugins=grpc:. \
-		../protobuf-definitions/backend/services/v1/hello.proto
+		./protobuf-definitions/backend/services/v1/hello.proto
 
 ## Format source codes
 fmt:
