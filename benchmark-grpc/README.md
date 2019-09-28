@@ -6,6 +6,16 @@
 
 # Usage
 
+## Loadtesting
+
+Send `GET /` to benchmark-service to start load testing:
+
+```
+curl localhost:8001
+```
+
+## Development
+
 Run containers:
 
 ```

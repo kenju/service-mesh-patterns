@@ -8,6 +8,8 @@ services:
       - envoymesh
     ports:
       - '8001:8001'
+    environment:
+      - LOAD_TEST_TARGET_ADDR=backend:8080
 
   backend-service:
     build:
