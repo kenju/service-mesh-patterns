@@ -31,6 +31,10 @@ benchmark_server_count 200
 benchmark_server_total 72
 ```
 
+Visit Grafana Dashboard:
+
+![](./grafana-example.jpg)
+
 ## Development
 
 Run containers:
