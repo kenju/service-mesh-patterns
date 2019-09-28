@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package backend.services.v1;
+
+import "google/api/annotations.proto";
+
+service HelloService {
+    rpc Hello (HelloRequest) returns (HelloResponse) {
+        option (google.api.http) = {
+            get: "/v1/hello"
+        };
+    }
+}
+
+message HelloRequest {
+}
+
+message HelloResponse {
+    message Success {
+        string status_code = 1;
+    }
+
+    message Failure {
+        string error_code = 1;
+        string error_message = 2;
+    }
+
+    oneof result {
+        Success success = 1;
+        Failure failure = 2;
+    }
+}

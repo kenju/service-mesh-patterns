@@ -1,0 +1,17 @@
+version: '3.7'
+services:
+
+  backend-service:
+    build:
+      context: './backend-service'
+    networks:
+      envoymesh:
+        # NOTE: aliases is important to round-robin even while scaling-out
+        # @see https://github.com/envoyproxy/envoy/tree/master/examples/front-proxy
+        aliases:
+          - backend
+    expose:
+      - '8080'
+
+networks:
+  envoymesh: {}
