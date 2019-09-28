@@ -96,7 +96,6 @@ func startLoadTest(serverAddr string, writer io.Writer) {
 		"backend.services.v1.HelloService.Hello",
 		serverAddr,
 		runner.WithInsecure(true),
-		runner.WithTotalRequests(10), // TODO: modify as you like
 	)
 
 	if err != nil {
