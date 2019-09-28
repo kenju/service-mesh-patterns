@@ -20,7 +20,11 @@ RUN apk update && apk upgrade && apk add ca-certificates
 WORKDIR /go
 
 # copy the minimum necessary failes from the build stage
-COPY --from=builder /app/benchmark-service /app/REVISION ./
+COPY --from=builder \
+    /app/benchmark-service \
+    /app/REVISION \
+    /app/protobuf-definitions \
+    ./
 
 EXPOSE 8080
 CMD ["/go/benchmark-service"]

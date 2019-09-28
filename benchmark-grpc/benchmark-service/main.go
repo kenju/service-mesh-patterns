@@ -10,6 +10,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"path/filepath"
 	"strconv"
 	"time"
 )
@@ -19,6 +20,15 @@ const (
 	defaultLoadTestTargetAddr = "127.0.0.1:8080"
 )
 
+var defaultImportPath string
+
+func init() {
+	defaultImportPath = filepath.Join(
+		getEnv("GOPATH", "HOME"),
+		"src",
+		"github.com/kenju/service-mesh-patterns/benchmark-grpc/protobuf-definitions/backend/services/v1",
+	)
+}
 
 func main() {
 	port := getEnv("ADDR", defaultAddr)
@@ -93,15 +103,19 @@ func checkRequest(serverAddr string) {
 }
 
 func startLoadTest(serverAddr string, writer io.Writer) {
+	importPath := getEnv("PROTO_IMPORT_PATH", defaultImportPath)
+
+	log.Printf("importPath: %s", importPath)
+
 	report, err := runner.Run(
 		"backend.services.v1.HelloService.Hello",
 		serverAddr,
 		runner.WithProtoFile(
 			"hello.proto",
-			[]string{"/Users/kenju-wagatsuma/.ghq/src/github.com/kenju/service-mesh-patterns/protobuf-definitions"},
+			[]string{importPath},
 		),
-		runner.WithDataFromFile("data.json"),
 		runner.WithInsecure(true),
+		runner.WithTotalRequests(10), // TODO: modify as you like
 	)
 
 	if err != nil {
