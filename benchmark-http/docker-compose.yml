@@ -1,0 +1,57 @@
+version: '3.7'
+services:
+
+  benchmark-service:
+    build:
+      context: './benchmark-service'
+    networks:
+      - envoymesh
+    expose:
+      - '8001'
+    ports:
+      - '8001:8001'
+    environment:
+      - LOAD_TEST_TARGET_ADDR=http://backend:8080
+
+  backend-service:
+    build:
+      context: './backend-service'
+    networks:
+      envoymesh:
+        # NOTE: aliases is important to round-robin even while scaling-out
+        # @see https://github.com/envoyproxy/envoy/tree/master/examples/front-proxy
+        aliases:
+          - backend
+    expose:
+      - '8080'
+    ports:
+      - '8080:8080'
+    environment:
+      - ADDR=:8080
+
+  # prometheus pull metrics from statsd_exporter in every few seconds
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus.yaml
+    ports:
+      - '9090:9090' # the web interface
+    command: "--config.file=/etc/prometheus.yaml"
+    networks:
+      - envoymesh
+
+  # grafana uses prometheus as its data source to visualize metrics
+  grafana:
+    image: grafana/grafana
+    ports:
+      - '3000:3000' # the web interface
+    volumes:
+      - ./grafana/grafana.ini:/etc/grafana/grafana.ini
+      - ./grafana/datasource.yaml:/etc/grafana/provisioning/datasources/datasource.yaml
+      - ./grafana/dashboard.yaml:/etc/grafana/provisioning/dashboards/dashboard.yaml
+      - ./grafana/dashboard.json:/etc/grafana/provisioning/dashboards/dashboard.json
+    networks:
+      - envoymesh
+
+networks:
+  envoymesh: {}

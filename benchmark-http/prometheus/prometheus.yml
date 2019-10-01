@@ -1,0 +1,12 @@
+# @doc https://prometheus.io/docs/prometheus/latest/configuration/configuration/
+global:
+  scrape_interval: 15s
+  scrape_timeout: 10s
+# @doc https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scrape_config
+scrape_configs:
+  - job_name: benchmark-service
+    scrape_interval: 15s
+    static_configs:
+      - targets: ['benchmark-service:8001']
+        labels:
+          group: 'benchmark-service'
