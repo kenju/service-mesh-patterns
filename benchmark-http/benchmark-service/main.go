@@ -106,10 +106,12 @@ func startLoadTest(serverAddr string, writer io.Writer) {
 		panic(err)
 	}
 
+	reqCount := 200
+
 	worker := &requester.Work{
 		Request:            req,
 		RequestBody:        nil,
-		N:                  200,
+		N:                  reqCount,
 		C:                  50,
 		QPS:                0,
 		Timeout:            20,
@@ -126,6 +128,8 @@ func startLoadTest(serverAddr string, writer io.Writer) {
 		worker.Stop()
 	}()
 	worker.Run()
+
+	promGaugeCount.Set(float64(reqCount))
 
 	fmt.Fprintf(writer, "finished load testing\n")
 }
