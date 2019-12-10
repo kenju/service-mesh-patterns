@@ -1,0 +1,33 @@
+version: '3.7'
+services:
+
+  lb:
+    build:
+      context: './nginx-base'
+    links:
+      - 'cache1'
+      - 'cache2'
+      - 'origin'
+    ports:
+        - '80:80'
+    volumes:
+      - ./nginx-base/conf:/etc/nginx:ro
+
+  cache1:
+    build:
+      context: './nginx-base'
+    volumes:
+      - ./nginx-base/conf:/etc/nginx:ro
+
+  cache2:
+    build:
+      context: './nginx-base'
+    volumes:
+      - ./nginx-base/conf:/etc/nginx:ro
+
+  origin:
+    build:
+      context: './nginx-base'
+    volumes:
+      - ./nginx-base/conf:/etc/nginx:ro
+

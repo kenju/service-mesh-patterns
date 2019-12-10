@@ -21,3 +21,4 @@ envoy-prometheus-monitoring | [distributed-tracing](https://microservices.io/pat
 sub directory | description
 ---|---
 nginx-proxy-cache | A reverse proxy (NGINX) cache response from upstreams using [ngx_http_proxy_module](https://nginx.org/en/docs/http/ngx_http_proxy_module.html).
+nginx-content-distribution | A scalable content distribution patterns with load balancers & cache servers.
