@@ -1,0 +1,25 @@
+version: '3.7'
+services:
+
+  backend1:
+    build:
+      context: './backend'
+    expose:
+      - '8080'
+
+  backend2:
+    build:
+      context: './backend'
+    expose:
+      - '8080'
+
+  nginx:
+    build:
+      context: './nginx'
+    ports:
+      - '80:80'
+    links:
+      - 'backend1'
+      - 'backend2'
+    volumes:
+      - ./nginx/conf:/etc/nginx:ro
