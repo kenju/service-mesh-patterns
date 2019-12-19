@@ -25,3 +25,9 @@ nginx-name-based-virtual-hosting | A NGINX template for the name besed virtual h
 nginx-proxy-cache | A reverse proxy (NGINX) cache response from upstreams using [ngx_http_proxy_module](https://nginx.org/en/docs/http/ngx_http_proxy_module.html).
 nginx-content-distribution | A scalable content distribution patterns with load balancers & cache servers.
 openresty-simple | A simple container setup based on [openresty/docker-openresty](https://github.com/openresty/docker-openresty).
+
+## kubernetes
+
+sub directory | description
+---|---
+k8s-ingress-nginx | A kubernetes resources using official [ingress-controller](https://kubernetes.io/docs/concepts/services-networking/ingress/) for [NGINX](https://github.com/kubernetes/ingress-nginx)
