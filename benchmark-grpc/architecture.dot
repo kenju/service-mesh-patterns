@@ -1,0 +1,15 @@
+digraph G {
+  node [shape=box]; benchmarker; backend_service; prometheus; grafana;
+  node [shape=circle]; run;
+
+  run -> benchmarker;
+
+	subgraph cluster {
+		label = "Cluster";
+		color=blue
+
+    benchmarker -> backend_service [label="gRPC load request"];
+    benchmarker -> prometheus [label="scrape per 15sec"];
+    prometheus -> grafana [label="datasource"];
+	}
+}
