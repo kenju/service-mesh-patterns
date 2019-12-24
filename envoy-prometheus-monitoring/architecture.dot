@@ -1,0 +1,18 @@
+digraph G {
+  node [shape=box]; front_envoy; http_backend_envoy; http_backend; statsd_exporter; prometheus; grafana;
+  node [shape=circle]; GET;
+
+  GET -> front_envoy;
+
+	subgraph cluster {
+		label = "Cluster";
+		color=blue
+
+    front_envoy -> statsd_exporter [label="stats_sink envoy.statsd"];
+    front_envoy -> http_backend_envoy [label="envoy.http_connection_manager"]
+    http_backend_envoy -> http_backend [label="envoy.http_connection_manager"]
+    http_backend_envoy -> statsd_exporter [label="stats_sink envoy.statsd"]
+    statsd_exporter -> prometheus [label="scrape per 15sec"]
+    prometheus -> grafana [label="datasource"]
+	}
+}
