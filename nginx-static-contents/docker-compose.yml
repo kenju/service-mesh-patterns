@@ -1,0 +1,12 @@
+version: '3.7'
+services:
+
+  nginx:
+    build:
+      context: './nginx'
+    ports:
+      - '80:80'
+      - '8888:8888'
+    volumes:
+      - ./nginx/conf:/etc/nginx:ro
+      - ./nginx/var/www:/var/www:ro
