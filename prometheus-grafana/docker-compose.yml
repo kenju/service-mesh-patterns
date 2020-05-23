@@ -1,0 +1,36 @@
+version: '3.7'
+services:
+
+  node-exporter:
+    image: prom/node-exporter
+    ports:
+      - '9100:9100' # Default listen port https://github.com/prometheus/node_exporter/blob/202ecf9c9d1d1960cc9cac24838d13e9cff5edca/node_exporter.go#L144
+    networks:
+      - prometheus-grafana-network
+
+  # prometheus pull metrics from statsd_exporter in every few seconds
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus.yaml
+    ports:
+      - '9090:9090' # the web interface
+    command: "--config.file=/etc/prometheus.yaml"
+    networks:
+      - prometheus-grafana-network
+
+  # grafana uses prometheus as its data source to visualize metrics
+  grafana:
+    image: grafana/grafana
+    ports:
+      - '3000:3000' # the web interface
+    volumes:
+      - ./grafana/grafana.ini:/etc/grafana/grafana.ini
+      - ./grafana/datasource.yaml:/etc/grafana/provisioning/datasources/datasource.yaml
+      - ./grafana/dashboard.yaml:/etc/grafana/provisioning/dashboards/dashboard.yaml
+      - ./grafana/node-exporter-dashboard.json:/etc/grafana/provisioning/dashboards/node-exporter-dashboard.json
+    networks:
+      - prometheus-grafana-network
+
+networks:
+  prometheus-grafana-network: {}
