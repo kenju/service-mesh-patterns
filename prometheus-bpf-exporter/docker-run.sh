@@ -9,4 +9,4 @@ sudo docker run \
   --volume /etc/localtime:/etc/localtime:ro \
   -p 9435:9435 \
   kenju/bpf-exporter \
-  /bin/bash
+  bpf-exporter --config.file=examples/runqlat.yaml
