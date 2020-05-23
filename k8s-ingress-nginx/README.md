@@ -20,7 +20,50 @@ Image
 
 ## Hands-On
 
-Setup
+### Docker for Mac
+
+#### Setup
+
+```bash
+# kubectl krew install ingress-nginx
+kubectl krew install ingress-nginx
+
+# check that ingress-nginx is installed
+kubectl krew list
+```
+
+#### Deployment
+
+```bash
+# check docker-desktop node is running
+kubectl get nodes
+kubectl describe node docker-desktop
+
+# create deployment, pods, services and ingress
+kubectl apply -f path-based-routing.yaml
+
+# check each resources are created
+kubectl get deploy
+kubectl get pods
+kubectl get service
+kubectl get ingress
+```
+
+#### Operation
+
+```bash
+```
+
+#### Cleanup
+
+```bash
+# delete
+kubectl delete -f path-based-routing.yaml
+```
+
+### Minikube
+
+#### Setup
 
 ```bash
 # https://kubernetes.io/docs/tasks/access-application-cluster/ingress-minikube/
@@ -30,6 +73,8 @@ kubectl get pods -n kube-system | grep nginx-ingress-controller
 # kubectl krew install ingress-nginx
 kubectl krew install ingress-nginx
 ```
+
+#### Deployment
 
 ```bash
 # check minikube is running
@@ -44,7 +89,11 @@ kubectl get deploy
 kubectl get pods
 kubectl get service
 kubectl get ingress
+```
 
+#### Operation
+
+```bash
 # launch minikube dashboard
 minikube dashboard
 
@@ -109,7 +158,11 @@ kubectl exec \
   -n kube-system \
   `kubectl get pods -n kube-system | grep nginx-ingress-controller | awk '{print $1}'` \
   /bin/bash
+```
 
+#### Cleanup
+
+```bash
 # delete
 kubectl delete -f app.yaml
 ```
