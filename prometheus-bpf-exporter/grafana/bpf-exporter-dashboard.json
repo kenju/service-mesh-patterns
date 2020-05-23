@@ -1,5 +1,5 @@
-
-tations": {
+{
+  "annotations": {
     "list": [
       {
         "builtIn": 1,
@@ -15,7 +15,7 @@ tations": {
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 2,
+  "id": 1,
   "links": [],
   "panels": [
     {
@@ -208,5 +208,5 @@ tations": {
   "timezone": "",
   "title": "eBPF Exporter Dashboard",
   "uid": "wzp97ZkMz",
-  "version": 3
+  "version": 1
 }

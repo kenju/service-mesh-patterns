@@ -8,11 +8,11 @@ services:
       - '9435:9435'
     privileged: true
     volumes:
-      - ./bpf-exporter/runqlat.yaml:/runqlat.yaml
+      - ./bpf-exporter:/config
       - /lib/modules:/lib/modules:ro
       - /usr/src:/usr/src:ro
       - /etc/localtime:/etc/localtime:ro
-    command: bpf-exporter --config.file=/runqlat.yaml
+    command: bpf-exporter --config.file=/config/runqlat.yaml
     networks:
       - prometheus-grafana-network
 
