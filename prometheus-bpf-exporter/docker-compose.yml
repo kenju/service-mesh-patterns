@@ -1,15 +1,18 @@
 version: '3.7'
 services:
 
-  node-exporter:
+  bpf-exporter:
     # NOTE: build a docker image from https://github.com/cloudflare/ebpf_exporter
     image: kenju/bpf-exporter
     ports:
-      - '9100:9100'
+      - '9435:9435'
+    privileged: true
     volumes:
       - ./bpf-exporter/runqlat.yaml:/runqlat.yaml
-    args:
-      - --config.file=/runqlat.yaml
+      - /lib/modules:/lib/modules:ro
+      - /usr/src:/usr/src:ro
+      - /etc/localtime:/etc/localtime:ro
+    command: bpf-exporter --config.file=/runqlat.yaml
     networks:
       - prometheus-grafana-network
 
@@ -33,7 +36,7 @@ services:
       - ./grafana/grafana.ini:/etc/grafana/grafana.ini
       - ./grafana/datasource.yaml:/etc/grafana/provisioning/datasources/datasource.yaml
       - ./grafana/dashboard.yaml:/etc/grafana/provisioning/dashboards/dashboard.yaml
-      - ./grafana/node-exporter-dashboard.json:/etc/grafana/provisioning/dashboards/node-exporter-dashboard.json
+      - ./grafana/bpf-exporter-dashboard.json:/etc/grafana/provisioning/dashboards/bpf-exporter-dashboard.json
     networks:
       - prometheus-grafana-network
 
