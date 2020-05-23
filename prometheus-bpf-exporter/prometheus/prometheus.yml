@@ -4,8 +4,8 @@ global:
   scrape_timeout: 10s
 # @doc https://prometheus.io/docs/prometheus/latest/configuration/configuration/#scrape_config
 scrape_configs:
-  - job_name: 'node'
+  - job_name: 'bpf'
     static_configs:
-      - targets: ['node-exporter:9100']
+      - targets: ['bpf-exporter:9435']
         labels:
-          group: 'node-exporter'
+          group: 'bpf-exporter'
