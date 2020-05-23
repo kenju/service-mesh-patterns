@@ -1,0 +1,41 @@
+version: '3.7'
+services:
+
+  node-exporter:
+    # NOTE: build a docker image from https://github.com/cloudflare/ebpf_exporter
+    image: kenju/bpf-exporter
+    ports:
+      - '9100:9100'
+    volumes:
+      - ./bpf-exporter/runqlat.yaml:/runqlat.yaml
+    args:
+      - --config.file=/runqlat.yaml
+    networks:
+      - prometheus-grafana-network
+
+  # prometheus pull metrics from statsd_exporter in every few seconds
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus.yaml
+    ports:
+      - '9090:9090' # the web interface
+    command: "--config.file=/etc/prometheus.yaml"
+    networks:
+      - prometheus-grafana-network
+
+  # grafana uses prometheus as its data source to visualize metrics
+  grafana:
+    image: grafana/grafana
+    ports:
+      - '3000:3000' # the web interface
+    volumes:
+      - ./grafana/grafana.ini:/etc/grafana/grafana.ini
+      - ./grafana/datasource.yaml:/etc/grafana/provisioning/datasources/datasource.yaml
+      - ./grafana/dashboard.yaml:/etc/grafana/provisioning/dashboards/dashboard.yaml
+      - ./grafana/node-exporter-dashboard.json:/etc/grafana/provisioning/dashboards/node-exporter-dashboard.json
+    networks:
+      - prometheus-grafana-network
+
+networks:
+  prometheus-grafana-network: {}
