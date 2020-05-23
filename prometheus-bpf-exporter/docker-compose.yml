@@ -8,8 +8,6 @@ services:
       - '9100:9100'
     volumes:
       - ./bpf-exporter/runqlat.yaml:/runqlat.yaml
-    args:
-      - --config.file=/runqlat.yaml
     networks:
       - prometheus-grafana-network
 

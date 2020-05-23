@@ -20,7 +20,11 @@ Check the running containers:
 docker-compose ps
 ```
 
-## GUI Console
+## Containers
+
+### bpf-exporter
+
+The BPF scripts copyrights for https://github.com/cloudflare/ebpf_exporter
 
 ### prometheus explorer
 
