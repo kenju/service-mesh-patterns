@@ -12,7 +12,7 @@ services:
       - /lib/modules:/lib/modules:ro
       - /usr/src:/usr/src:ro
       - /etc/localtime:/etc/localtime:ro
-    command: bpf-exporter --config.file=/config/runqlat.yaml
+    command: bpf-exporter --config.file=/config/tcpsynbl.yaml
     networks:
       - prometheus-grafana-network
 
