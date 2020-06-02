@@ -21,6 +21,7 @@ envoy-prometheus-monitoring | [distributed-tracing](https://microservices.io/pat
 sub directory | description
 ---|---
 fluentd-logging-driver | Basic configuration for [fluentd as a logging driver](https://docs.fluentd.org/container-deployment/docker-compose)
+fluentd-logging-kibana | Ingest jsonl format logs from Rails app, parse at fluentd, write messages to Elasticsearch, and query on Kibana
 
 ## kubernetes
 
