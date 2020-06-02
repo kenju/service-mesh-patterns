@@ -37,11 +37,11 @@ spec:
               protocol: TCP
           resources:
             limits:
-              cpu: 100m
-              memory: 1Gi
+              cpu: 500m
+              memory: 4Gi
             requests:
-              cpu: 100m
-              memory: 1Gi
+              cpu: 500m
+              memory: 1.5Gi
             # limits:
             #   cpu: 500m
             #   memory: 4Gi

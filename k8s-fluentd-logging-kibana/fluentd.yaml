@@ -6,6 +6,7 @@ metadata:
   labels:
     k8s-app: fluentd-logging
     version: v1
+    kubernetes.io/cluster-service: "true"
 spec:
   selector:
     matchLabels:
@@ -16,16 +17,20 @@ spec:
       labels:
         k8s-app: fluentd-logging
         version: v1
+        kubernetes.io/cluster-service: "true"
     spec:
+      serviceAccount: fluentd
+      serviceAccountName: fluentd
       tolerations:
       - key: node-role.kubernetes.io/master
         effect: NoSchedule
       containers:
       - name: fluentd
         image: fluentd-kubernetes-daemonset:v1-debian-elasticsearch
+        imagePullPolicy: Never # do not pull from remote
         env:
           - name:  FLUENT_ELASTICSEARCH_HOST
-            value: "elasticsearch-logging"
+            value: "elasticsearch.default"
           - name:  FLUENT_ELASTICSEARCH_PORT
             value: "9200"
           - name: FLUENT_ELASTICSEARCH_SCHEME
@@ -50,3 +55,41 @@ spec:
       - name: varlibdockercontainers
         hostPath:
           path: /var/lib/docker/containers
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: fluentd
+  namespace: kube-system
+
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRole
+metadata:
+  name: fluentd
+  namespace: kube-system
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - pods
+      - namespaces
+    verbs:
+      - get
+      - list
+      - watch
+
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1beta1
+metadata:
+  name: fluentd
+roleRef:
+  kind: ClusterRole
+  name: fluentd
+  apiGroup: rbac.authorization.k8s.io
+subjects:
+  - kind: ServiceAccount
+    name: fluentd
+    namespace: kube-system
