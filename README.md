@@ -45,3 +45,4 @@ openresty-simple | A simple container setup based on [openresty/docker-openresty
 sub directory | description
 ---|---
 prometheus-grafana | A basic template for Prometheus for scraping from node_exporter and visualize via the Grafana dashboard.
+prometheus-bpf-exporter | A basic architecture for exporting BPF metrics to Prometheus, and visualize on Grafana.
