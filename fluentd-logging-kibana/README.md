@@ -1,4 +1,4 @@
-# fluentd-logging-via-file
+# fluentd-logging-kibana
 
 https://docs.fluentd.org/container-deployment/docker-compose
 
