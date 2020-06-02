@@ -1,0 +1,25 @@
+version: "3.7"
+services:
+
+  api:
+    build:
+      context: './api'
+    expose:
+      - "4567"
+    ports:
+      - "4567:4567"
+    logging:
+      driver: "fluentd"
+      options:
+        fluentd-address: "localhost:24224"
+        tag: api.access
+
+  fluentd:
+    build:
+      context: './fluentd'
+    expose:
+      - "24224"
+    ports:
+      - "24224:24224"
+    volumes:
+      - "./log/fluentd:/fluentd/log"

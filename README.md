@@ -16,6 +16,12 @@ envoy-grpc-gateway | [grpc-bridge](https://www.envoyproxy.io/docs/envoy/latest/s
 envoy-lua-filters | http-sniffing pattern using [Lua HTTP filter](https://www.envoyproxy.io/docs/envoy/v1.7.0/configuration/http_filters/lua_filter)
 envoy-prometheus-monitoring | [distributed-tracing](https://microservices.io/patterns/observability/distributed-tracing.html) pattern using Prometheus & Grafana
 
+## Fluentd
+
+sub directory | description
+---|---
+fluentd-logging-driver | Basic configuration for [fluentd as a logging driver](https://docs.fluentd.org/container-deployment/docker-compose)
+
 ## kubernetes
 
 sub directory | description
