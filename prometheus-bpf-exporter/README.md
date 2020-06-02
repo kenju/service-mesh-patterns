@@ -1,6 +1,6 @@
 # prometheus-grafana
 
-The basic architecture for exporting machine metrics to Prometheus, and visualize on Grafana.
+The basic architecture for exporting BPF metrics to Prometheus, and visualize on Grafana.
 
 # Usage
 
