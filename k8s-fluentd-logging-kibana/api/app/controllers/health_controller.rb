@@ -4,4 +4,8 @@ class HealthController < ApplicationController
       log: 'ok'
     }
   end
+
+  def error
+    raise NotImplementedError
+  end
 end
