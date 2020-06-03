@@ -49,6 +49,7 @@ spec:
           path: /var/log
 
 ---
+# ServiceAccount to be attached to fluentd DaemonSet
 apiVersion: v1
 kind: ServiceAccount
 metadata:
@@ -56,6 +57,7 @@ metadata:
   namespace: kube-system
 
 ---
+# ClusterRole for allowing get/list/watch verbs for pods/namespaces
 apiVersion: rbac.authorization.k8s.io/v1beta1
 kind: ClusterRole
 metadata:
@@ -73,6 +75,7 @@ rules:
       - watch
 
 ---
+# Bind fluentd ClusterRole and fluentd ServiceAccount
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1beta1
 metadata:

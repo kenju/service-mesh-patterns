@@ -30,6 +30,10 @@ Describe a pod
     kubectl describe pods api-
     kubectl describe pods fluentd- -n kube-system
 
+Describe a serviceaccount
+
+    kubectl describe serviceaccounts fluentd -n kube-system
+
 Setup port forwarding
 
     kubectl port-forward api-****** 8080
