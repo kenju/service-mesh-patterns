@@ -6,7 +6,9 @@ RUN bundle config --global frozen 1
 WORKDIR /usr/src/app
 
 COPY Gemfile Gemfile.lock ./
-RUN bundle install -j4 --deployment --without 'doc test'
+RUN bundle config deployment true && \
+    bundle config without 'doc test' && \
+    bundle install -j4
 
 COPY . .
 
