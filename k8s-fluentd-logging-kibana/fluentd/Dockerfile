@@ -33,10 +33,10 @@ RUN buildDeps="sudo make gcc g++ libc-dev libffi-dev" \
 
 # Copy configuration files
 COPY ./conf/fluent.conf /fluentd/etc/
-# COPY ./conf/systemd.conf /fluentd/etc/
-# COPY ./conf/kubernetes.conf /fluentd/etc/
-COPY ./conf/kubernetes-simple.conf /fluentd/etc/
-# COPY ./conf/prometheus.conf /fluentd/etc/
+COPY ./conf/systemd.conf /fluentd/etc/
+COPY ./conf/kubernetes.conf /fluentd/etc/
+COPY ./conf/api.conf /fluentd/etc/
+COPY ./conf/prometheus.conf /fluentd/etc/
 RUN touch /fluentd/etc/disable.conf
 
 # Copy plugins
