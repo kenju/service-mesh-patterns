@@ -27,7 +27,8 @@ spec:
     spec:
       containers:
         - name: kibana
-          image: docker.elastic.co/kibana/kibana:7.7.0
+          # Use `-oss` version w/o X-Pack feature https://www.docker.elastic.co/#
+          image: docker.elastic.co/kibana/kibana-oss:7.7.0
           env:
             - name: ELASTICSEARCH_HOSTS
               value: http://elasticsearch:9200
