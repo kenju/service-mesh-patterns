@@ -6,5 +6,13 @@ Rails.application.configure do
   config.lograge.base_controller_class = 'ActionController::API'
 
   config.lograge.formatter = Lograge::Formatters::Json.new
-  # config.lograge.formatter = Lograge::Formatters::Logstash.new
+
+  # log errors / execptions in jsonl
+  # https://github.com/roidrage/lograge#logging-errors--exceptions
+  config.lograge.custom_options = lambda do |event|
+    {
+      exception: event.payload[:exception], # ["ExceptionClass", "the message"]
+      exception_object: event.payload[:exception_object] # the exception instance
+    }
+  end
 end
