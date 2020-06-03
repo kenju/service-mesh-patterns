@@ -19,10 +19,6 @@ spec:
   selector:
     matchLabels:
       app: api
-  strategy:
-    type: "RollingUpdate"
-  minReadySeconds: 0
-  revisionHistoryLimit: 5
   replicas: 1
   template:
     metadata:
@@ -33,9 +29,7 @@ spec:
       containers:
         - name: api-app
           image: api-app:test
-          # use the local image
-          # https://kubernetes.io/docs/concepts/containers/images/#:~:text=The%20default%20pull%20policy%20is,of%20the%20container%20to%20Always%20.&text=omit%20the%20imagePullPolicy%20and%20the%20tag%20for%20the%20image%20to%20use.
-          imagePullPolicy: Never
+          imagePullPolicy: Never # use the local image
           ports:
             - containerPort: 8080
               name: http
