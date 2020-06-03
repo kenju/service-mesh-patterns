@@ -5,6 +5,10 @@ Change to the context you use
     # for docker desktop for mac
     kubectl use-context docker-desktop
 
+Check whether RBAC is enabled within your cluster
+
+    kubectl cluster-info dump | grep authorization-mode
+
 Build Docker Image
 
     docker build -t api-app:test ./api
