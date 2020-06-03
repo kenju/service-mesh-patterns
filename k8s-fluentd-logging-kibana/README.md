@@ -41,6 +41,10 @@ Get logs from pods
     # or use https://github.com/wercker/stern
     stern api-
 
+Exec bash on pods
+
+    kubectl exec -it fluentd-zw8lx /bin/bash -n kube-system
+
 Delete k8s components
 
     kubectl delete -f api.yaml
