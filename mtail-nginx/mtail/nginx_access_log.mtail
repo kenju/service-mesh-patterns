@@ -1,0 +1,25 @@
+counter line_count
+
+/$/ {
+  line_count++
+}
+
+counter   nginx_http_requests_size_bytes_total by code, method, user_agent
+counter   nginx_http_requests_total            by code, method, user_agent
+counter   nginx_http_response_size_bytes_total by code, method, user_agent
+histogram nginx_http_request_duration_seconds  by code, method, user_agent buckets 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1
+
+/^/ +
+/status:(?P<status>\d{3})\t/ +
+/reqtime:(?P<reqtime>\d+\.\d+)\t/ +
+/method:(?P<method>[A-Z]+)\t/ +
+/ua:(?P<ua>[^\t]+)\t/ +
+/size:(?P<size>\d+)\t/ +
+/reqsize:(?P<reqsize>\d+)\t/ +
+/msec:[^\t]*/ +
+/$/ {
+  nginx_http_requests_size_bytes_total[$status][$method][$ua] += $reqsize
+  nginx_http_requests_total[$status][$method][$ua]++
+  nginx_http_response_size_bytes_total[$status][$method][$ua] += $size
+  nginx_http_request_duration_seconds[$status][$method][$ua] = $reqtime
+}

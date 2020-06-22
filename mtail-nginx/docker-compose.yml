@@ -1,0 +1,48 @@
+version: '3.7'
+services:
+
+  nginx:
+    build:
+      context: './nginx'
+    ports:
+      - '80:80'
+      - '8888:8888'
+    volumes:
+      - ./nginx/conf:/etc/nginx:ro
+      - logvolume:/var/log/nginx
+
+  mtail:
+    image: mtail
+    command:
+      - -progs
+      - /progs/nginx_access_log.mtail
+      - -logs
+      - /var/log/nginx/access-mtail.log
+    ports:
+      - '3903:3903'
+    volumes:
+      - ./mtail/nginx_access_log.mtail:/progs/nginx_access_log.mtail
+      - logvolume:/var/log/nginx
+
+  # prometheus pull metrics from statsd_exporter in every few seconds
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus.yaml
+    ports:
+      - '9090:9090' # the web interface
+    command: "--config.file=/etc/prometheus.yaml"
+
+  # grafana uses prometheus as its data source to visualize metrics
+  grafana:
+    image: grafana/grafana
+    ports:
+      - '3000:3000' # the web interface
+    volumes:
+      - ./grafana/grafana.ini:/etc/grafana/grafana.ini
+      - ./grafana/datasource.yaml:/etc/grafana/provisioning/datasources/datasource.yaml
+      - ./grafana/dashboard.yaml:/etc/grafana/provisioning/dashboards/dashboard.yaml
+      - ./grafana/node-exporter-dashboard.json:/etc/grafana/provisioning/dashboards/node-exporter-dashboard.json
+
+volumes:
+  logvolume: {}
