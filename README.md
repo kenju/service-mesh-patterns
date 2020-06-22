@@ -30,6 +30,12 @@ sub directory | description
 k8s-ingress-nginx | A kubernetes resources using official [ingress-controller](https://kubernetes.io/docs/concepts/services-networking/ingress/) for [NGINX](https://github.com/kubernetes/ingress-nginx)
 k8s-fluentd-logging-kibana | Ingest jsonl format logs from Rails app via `/var/log/containers/*.log`, parse at fluentd DaemonSet, write messages to Elasticsearch, and query on Kibana
 
+## mtail
+
+sub directory | description
+---|---
+mtail-nginx | The basic architecture for extracting logs from NGINX access logs.
+
 ## NGINX
 
 sub directory | description
