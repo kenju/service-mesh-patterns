@@ -2,14 +2,12 @@ version: '3.7'
 services:
 
   backend1:
-    build:
-      context: './backend'
+    image: kenju/go-http-api:latest
     expose:
       - '8080'
 
   backend2:
-    build:
-      context: './backend'
+    image: kenju/go-http-api:latest
     expose:
       - '8080'
 
