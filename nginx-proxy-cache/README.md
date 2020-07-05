@@ -21,7 +21,7 @@ make start
 Then, send HTTP request to the nginx reverse proxy multiple times.
 
 ```
-for i in {1..10}; do make ping-lb; done
+make ping-loop
 ```
 
 You can notice that the following request will not be proxied to backend servers because the first response is cached.
