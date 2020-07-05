@@ -1,23 +1,13 @@
-# https://www.gnu.org/software/make/manual/make.html#index-_002eEXPORT_005fALL_005fVARIABLES
 .EXPORT_ALL_VARIABLES:
 GO111MODULE=on
 
 NAME := backend-service
-VERSION := $(shell git describe --tags --abbrev=0)
 REVISION := $(shell git rev-parse --short HEAD)
-LDFLAGS := -s -w -X 'main.version=$(VERSION)' -X 'main.revision=$(REVISION)'
-
-## Show help
-help:
-	@make2help $(MAKEFILE_LIST)
+LDFLAGS := -s -w -X 'main.revision=$(REVISION)'
 
 ## Run built binaries
 run: build
 	./backend-service
-
-## Run tests
-test:
-	gotest ./... -v
 
 ## Build binaries
 build:
@@ -25,11 +15,6 @@ build:
 
 ## Setup
 setup:
-	# get development tools
-	go get golang.org/x/tools/cmd/goimports
-	go get github.com/Songmu/make2help/cmd/make2help
-	go get github.com/rakyll/gotest
-	# setup protoc
 	go get google.golang.org/grpc
 	go get github.com/golang/protobuf/protoc-gen-go
 
@@ -47,12 +32,6 @@ protoc:
 		-I ${GOPATH}/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
 		--go_out=plugins=grpc:. \
 		../benchmark-service/protobuf-definitions/backend/services/v1/hello.proto
-
-## Format source codes
-fmt:
-	for d in $$(go list ./...); do \
-		goimports -w ${GOPATH}/src/$$d; \
-	done
 
 ## Run server
 run-server:
