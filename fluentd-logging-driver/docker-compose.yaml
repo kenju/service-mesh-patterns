@@ -2,8 +2,7 @@ version: "3.7"
 services:
 
   api:
-    build:
-      context: './api'
+    image: kenju/ruby-sinatra-api:latest
     expose:
       - "4567"
     ports:
