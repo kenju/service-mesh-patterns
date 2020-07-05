@@ -1,9 +1,7 @@
 version: "3.7"
 services:
-
   app:
-    build:
-      context: './app'
+    image: solsson/http-echo
     networks:
       envoymesh:
         aliases:
@@ -12,7 +10,6 @@ services:
       - "80"
     ports:
       - "8080:80"
-
   envoy:
     build:
       context: './envoy'
@@ -24,7 +21,8 @@ services:
     ports:
       - "8000:80"
       - "8001:8001"
-
+    environment:
+      - "ENVOY_UID=0" # https://github.com/envoyproxy/envoy/pull/11323
   log-service:
     build:
       context: './log-service'
