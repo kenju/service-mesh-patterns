@@ -11,7 +11,6 @@ Check whether RBAC is enabled within your cluster
 
 Build Docker Image
 
-    docker build -t api-app:test ./api
     docker build -t fluentd-kubernetes-daemonset:v1-debian-elasticsearch ./fluentd
 
 Deploy k8s components

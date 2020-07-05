@@ -28,8 +28,7 @@ spec:
     spec:
       containers:
         - name: api-app
-          image: api-app:test
-          imagePullPolicy: Never # use the local image
+          image: kenju/ruby-rails-api:latest
           ports:
             - containerPort: 8080
               name: http
