@@ -29,8 +29,7 @@ services:
   # backend HTTP application
   # this is running behind front-envoy
   http-backend:
-    build:
-      context: './http-backend'
+    image: kenju/go-http-api:latest
     expose:
       - '8081'
     networks:
@@ -41,6 +40,8 @@ services:
       # NOTE: use version 3+ and pass `--compatibility` option
       # @see https://github.com/docker/compose/issues/5586#issuecomment-375580132
       replicas: 3
+    environment:
+      ADDR: ':8081'
 
   # statsd_exporter export container's metrics in StatsD format
   # @doc https://github.com/prometheus/statsd_exporter
