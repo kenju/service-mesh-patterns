@@ -2,8 +2,7 @@ version: "3.7"
 services:
 
   api:
-    build:
-      context: './api'
+    image: kenju/ruby-rails-api:latest
     expose:
       - "8080"
     ports:
