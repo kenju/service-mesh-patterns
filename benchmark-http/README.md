@@ -8,7 +8,7 @@ Send `GET /` to benchmark-service to start load testing:
 
 Then see metrics which are supposed to be scraped by Prometheus:
 
-    curl localhost:8001/metrics
+    curl --silent localhost:8001/metrics
 
 output:
 
