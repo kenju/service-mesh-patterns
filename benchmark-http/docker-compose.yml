@@ -14,8 +14,7 @@ services:
       - LOAD_TEST_TARGET_ADDR=http://backend:8080
 
   backend-service:
-    build:
-      context: './backend-service'
+    image: kenju/go-http-api:latest
     networks:
       envoymesh:
         # NOTE: aliases is important to round-robin even while scaling-out
