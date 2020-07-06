@@ -3,21 +3,8 @@
 GO111MODULE=on
 
 NAME := gateway-service
-VERSION := $(shell git describe --tags --abbrev=0)
 REVISION := $(shell git rev-parse --short HEAD)
-LDFLAGS := -s -w -X 'main.version=$(VERSION)' -X 'main.revision=$(REVISION)'
-
-## Show help
-help:
-	@make2help $(MAKEFILE_LIST)
-
-## Run built binaries
-run: build
-	./gateway-service
-
-## Run tests
-test:
-	gotest ./... -v
+LDFLAGS := -s -w -X 'main.revision=$(REVISION)'
 
 ## Build binaries
 build:
@@ -25,10 +12,6 @@ build:
 
 ## Setup
 setup:
-	# get development tools
-	go get golang.org/x/tools/cmd/goimports
-	go get github.com/Songmu/make2help/cmd/make2help
-	go get github.com/rakyll/gotest
 	# protobuf
 	go get google.golang.org/grpc
 	go get github.com/golang/protobuf/protoc-gen-go
@@ -72,9 +55,3 @@ swagger:
 update:
 	go get -u
 	go mod tidy
-
-## Format source codes
-fmt:
-	for d in $$(go list ./...); do \
-		goimports -w ${GOPATH}/src/$$d; \
-	done
