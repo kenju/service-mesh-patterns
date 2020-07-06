@@ -1,0 +1,31 @@
+version: 1
+update_configs:
+  - package_manager: "go:modules"
+    directory: "/containers/go-grpc-api"
+    update_schedule: "daily"
+    default_reviewers:
+      - "kenju"
+    default_labels:
+      - "dependencies"
+  - package_manager: "go:modules"
+    directory: "/containers/go-http-api"
+    update_schedule: "daily"
+    default_reviewers:
+      - "kenju"
+    default_labels:
+      - "dependencies"
+  - package_manager: "ruby:bundler"
+    directory: "/containers/ruby-rails-api"
+    update_schedule: "daily"
+    default_reviewers:
+      - "kenju"
+    default_labels:
+      - "dependencies"
+  - package_manager: "ruby:bundler"
+    directory: "/containers/ruby-sinatra-api"
+    update_schedule: "daily"
+    default_reviewers:
+      - "kenju"
+    default_labels:
+      - "dependencies"
+
