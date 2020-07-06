@@ -35,6 +35,8 @@ services:
     expose:
       - '8000'
       - '8001'
+    environment:
+      - "ENVOY_UID=0" # https://github.com/envoyproxy/envoy/pull/11323
 
 networks:
   envoymesh: {}
