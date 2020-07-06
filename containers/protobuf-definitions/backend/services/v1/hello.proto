@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package backend.services.v1;
+
+service HelloService {
+    rpc Hello (HelloRequest) returns (HelloResponse) {
+    }
+}
+
+message HelloRequest {
+    string message = 1;
+}
+
+message HelloResponse {
+    message Success {
+        string status_code = 1;
+    }
+
+    message Failure {
+        string error_code = 1;
+        string error_message = 2;
+    }
+
+    oneof result {
+        Success success = 1;
+        Failure failure = 2;
+    }
+}
