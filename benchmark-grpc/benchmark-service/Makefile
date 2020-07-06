@@ -1,23 +1,9 @@
-# https://www.gnu.org/software/make/manual/make.html#index-_002eEXPORT_005fALL_005fVARIABLES
 .EXPORT_ALL_VARIABLES:
 GO111MODULE=on
 
 NAME := benchmark-service
-VERSION := $(shell git describe --tags --abbrev=0)
 REVISION := $(shell git rev-parse --short HEAD)
-LDFLAGS := -s -w -X 'main.version=$(VERSION)' -X 'main.revision=$(REVISION)'
-
-## Show help
-help:
-	@make2help $(MAKEFILE_LIST)
-
-## Run built binaries
-run: build
-	./benchmark-service
-
-## Run tests
-test:
-	gotest ./... -v
+LDFLAGS := -s -w -X 'main.revision=$(REVISION)'
 
 ## Build binaries
 build:
@@ -25,11 +11,6 @@ build:
 
 ## Setup
 setup:
-	# get development tools
-	go get golang.org/x/tools/cmd/goimports
-	go get github.com/Songmu/make2help/cmd/make2help
-	go get github.com/rakyll/gotest
-	# setup protoc
 	go get google.golang.org/grpc
 	go get github.com/golang/protobuf/protoc-gen-go
 
@@ -41,18 +22,12 @@ update:
 ## Compile protoc
 protoc:
 	protoc \
-		-I ./protobuf-definitions \
+		-I ../../containers/protobuf-definitions \
 		-I /usr/local/include \
 		-I ${GOPATH}/src \
 		-I ${GOPATH}/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
 		--go_out=plugins=grpc:. \
-		./protobuf-definitions/backend/services/v1/hello.proto
-
-## Format source codes
-fmt:
-	for d in $$(go list ./...); do \
-		goimports -w ${GOPATH}/src/$$d; \
-	done
+		../../containers/protobuf-definitions/backend/services/v1/hello.proto
 
 ## Run server
 run-server:
@@ -61,7 +36,3 @@ run-server:
 ## Run client
 run-client:
 	go run bin/client/client.go
-
-## Run docker container
-run-docker:
-	docker build .

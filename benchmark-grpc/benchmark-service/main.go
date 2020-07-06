@@ -3,6 +3,12 @@ package main
 import (
 	"context"
 	"fmt"
+	"io"
+	"log"
+	"net/http"
+	"os"
+	"time"
+
 	"github.com/bojand/ghz/printer"
 	"github.com/bojand/ghz/runner"
 	backend_service "github.com/kenju/service-mesh-patterns/benchmark-grpc/benchmark-service/backend/services/v1"
@@ -10,18 +16,12 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promauto"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"google.golang.org/grpc"
-	"io"
-	"log"
-	"net/http"
-	"os"
-	"strconv"
-	"time"
 )
 
 const (
-	defaultAddr = ":8001"
+	defaultAddr               = ":8001"
 	defaultLoadTestTargetAddr = "127.0.0.1:8080"
-	prometheusPrefix = "benchmark_server"
+	prometheusPrefix          = "benchmark_server"
 )
 
 // See ghz documentation for each metrics explanation
@@ -54,13 +54,13 @@ var (
 	// Use Heatmap panel of Grafana
 	// @doc https://grafana.com/docs/features/panels/heatmap/
 	promHistLatencyDistribution = promauto.NewHistogram(prometheus.HistogramOpts{
-		Name: fmt.Sprintf("%s_latency_distribution", prometheusPrefix),
-		Help: "The distribution of latency",
+		Name:    fmt.Sprintf("%s_latency_distribution", prometheusPrefix),
+		Help:    "The distribution of latency",
 		Buckets: prometheus.LinearBuckets(20, 10, 10),
 	})
 	promHistResponseTime = promauto.NewHistogram(prometheus.HistogramOpts{
-		Name: fmt.Sprintf("%s_response_histogram", prometheusPrefix),
-		Help: "The histogram of response time.",
+		Name:    fmt.Sprintf("%s_response_histogram", prometheusPrefix),
+		Help:    "The histogram of response time.",
 		Buckets: prometheus.LinearBuckets(20, 10, 10),
 	})
 )
@@ -80,11 +80,6 @@ func main() {
 
 }
 
-
-//--------------------------------
-// utility
-//--------------------------------
-
 func getEnv(key, defaultVal string) string {
 	v := os.Getenv(key)
 	if len(v) == 0 {
@@ -93,19 +88,6 @@ func getEnv(key, defaultVal string) string {
 	return v
 }
 
-func getEnvAsInt(key string, defaultVal int) (int, error) {
-	v := os.Getenv(key)
-	if len(v) == 0 {
-		return defaultVal, nil
-	}
-
-	i, err := strconv.Atoi(v)
-	return i, err
-}
-
-//--------------------------------
-// business logic
-//--------------------------------
 func startHandler(w http.ResponseWriter, r *http.Request) {
 
 	serverAddr := getEnv("LOAD_TEST_TARGET_ADDR", defaultLoadTestTargetAddr)
@@ -171,7 +153,7 @@ func startLoadTest(serverAddr string, writer io.Writer) {
 
 	// write response to writer
 	printer := printer.ReportPrinter{
-		Out: writer,
+		Out:    writer,
 		Report: report,
 	}
 	printer.Print("json")
