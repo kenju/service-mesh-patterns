@@ -19,6 +19,15 @@ updates:
   labels:
   - dependencies
 - package-ecosystem: gomod
+  directory: "/containers/go-http-api"
+  schedule:
+    interval: daily
+  open-pull-requests-limit: 1
+  reviewers:
+  - kenju
+  labels:
+  - dependencies
+- package-ecosystem: gomod
   directory: "/containers/go-grpc-api"
   schedule:
     interval: daily
