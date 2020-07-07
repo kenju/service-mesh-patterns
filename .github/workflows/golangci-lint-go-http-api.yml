@@ -1,0 +1,27 @@
+name: golangci-lint
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'containers/go-http-api/**'
+  pull_request:
+    paths:
+      - 'containers/go-http-api/**'
+jobs:
+  ci:
+    name: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v1
+        with:
+          version: v1.26
+          working-directory: containers/go-http-api
+
+          # Optional: golangci-lint command line arguments.
+          # args: --issues-exit-code=0
+
+          # Optional: show only new issues if it's a pull request. The default value is `false`.
+          only-new-issues: true
