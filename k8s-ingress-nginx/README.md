@@ -18,203 +18,123 @@ Image
 - https://github.com/kubernetes/kubernetes/tree/b1766b707a0f61e4a2640359c4482dcb2c689df5/test/images/echoserver
 - https://console.cloud.google.com/gcr/images/kubernetes-e2e-test-images/GLOBAL/echoserver?gcrImageListsize=30
 
-## Hands-On
+## Usage
 
-### Docker for Mac
+    # kubectl krew install ingress-nginx
+    kubectl krew install ingress-nginx
+    kubectl krew list
 
-#### Setup
+    # create deployment, pods, services and ingress
+    kubectl apply -k overlays/name-baed
+    kubectl apply -k overlays/path-baed
 
-```bash
-# kubectl krew install ingress-nginx
-kubectl krew install ingress-nginx
+    # port-forward to services
+    kubectl port-forward test-*** 8081:8080
+    kubectl port-forward test-*** 8082:8080
 
-# check that ingress-nginx is installed
-kubectl krew list
-```
+    # curl to services
+    curl localhost:8081/foo
+    curl localhost:8082/bar
 
-#### Deployment
+    # describe
+    kubectl describe ingress test-ingress
 
-```bash
-# check docker-desktop node is running
-kubectl get nodes
-kubectl describe node docker-desktop
-
-# create deployment, pods, services and ingress
-kubectl apply -f path-based-routing.yaml
-
-# check each resources are created
-kubectl get deploy
-kubectl get pods
-kubectl get service
-kubectl get ingress
-```
-
-#### Operation
-
-```bash
-```
-
-#### Cleanup
-
-```bash
-# delete
-kubectl delete -f path-based-routing.yaml
-```
+    # delete
+    kubectl delete -k overlays/name-baed
+    kubectl delete -k overlays/path-baed
 
 ### Minikube
 
 #### Setup
 
-```bash
-# https://kubernetes.io/docs/tasks/access-application-cluster/ingress-minikube/
-minikube addons enable ingress
-kubectl get pods -n kube-system | grep nginx-ingress-controller
+    # https://kubernetes.io/docs/tasks/access-application-cluster/ingress-minikube/
+    minikube addons enable ingress
+    kubectl get pods -n kube-system | grep nginx-ingress-controller
 
-# kubectl krew install ingress-nginx
-kubectl krew install ingress-nginx
-```
+    # kubectl krew install ingress-nginx
+    kubectl krew install ingress-nginx
 
 #### Deployment
 
-```bash
-# check minikube is running
-kubectl get nodes
-kubectl describe node minikube
+    # check minikube is running
+    kubectl get nodes
+    kubectl describe node minikube
 
-# create deployment, pods, services and ingress
-kubectl apply -f app.yaml
+    # create deployment, pods, services and ingress
+    kubectl apply -f app.yaml
 
-# check each resources are created
-kubectl get deploy
-kubectl get pods
-kubectl get service
-kubectl get ingress
-```
+    # check each resources are created
+    kubectl get deploy
+    kubectl get pods
+    kubectl get service
+    kubectl get ingress
 
 #### Operation
 
-```bash
-# launch minikube dashboard
-minikube dashboard
+    # launch minikube dashboard
+    minikube dashboard
 
-# accessing the application
-minikube ip
+    # accessing the application
+    minikube ip
 
-# cURL base.yaml
-curl `minikube ip`/test
+    # cURL base.yaml
+    curl `minikube ip`/test
 
-# cURL name-based-virtual-hosting.yaml
-curl -H "Host: foo.bar.com" `minikube ip`
-curl -H "Host: bar.foo.com" `minikube ip`
+    # cURL name-based-virtual-hosting.yaml
+    curl -H "Host: foo.bar.com" `minikube ip`
+    curl -H "Host: bar.foo.com" `minikube ip`
 
-# cURL path-based-routing.yaml
-curl -H "Host: foo.bar.com" `minikube ip`/foo
-curl -H "Host: foo.bar.com" `minikube ip`/bar
+    # cURL path-based-routing.yaml
+    curl -H "Host: foo.bar.com" `minikube ip`/foo
+    curl -H "Host: foo.bar.com" `minikube ip`/bar
 
-# describe pods
-kubectl get pods -n kube-system \
-  | grep nginx-ingress-controller \
-  | awk '{print $1}' \
-  | kubectl describe pods -n kube-system
+    # describe pods
+    kubectl get pods -n kube-system \
+    | grep nginx-ingress-controller \
+    | awk '{print $1}' \
+    | kubectl describe pods -n kube-system
 
-# describe ingress
-kubectl describe ingress test-ingress
+    # describe ingress
+    kubectl describe ingress test-ingress
 
-# view the logs
-kubectl get pods -n kube-system \
-  | grep nginx-ingress-controller \
-  | awk '{print $1}' \
-  | xargs kubectl logs -n kube-system
+    # view the logs
+    kubectl get pods -n kube-system \
+    | grep nginx-ingress-controller \
+    | awk '{print $1}' \
+    | xargs kubectl logs -n kube-system
 
-# view the nginx conf
-kubectl get pods -n kube-system \
-  | grep nginx-ingress-controller \
-  | awk '{print $1}' \
-  | xargs -J % kubectl exec -it -n kube-system % cat /etc/nginx/nginx.conf
+    # view the nginx conf
+    kubectl get pods -n kube-system \
+    | grep nginx-ingress-controller \
+    | awk '{print $1}' \
+    | xargs -J % kubectl exec -it -n kube-system % cat /etc/nginx/nginx.conf
 
-# get a JSON array of the backends for ingress-nginx
-# https://kubernetes.github.io/ingress-nginx/kubectl-plugin/#backends
-kubectl ingress-nginx backends -n kube-system
+    # get a JSON array of the backends for ingress-nginx
+    # https://kubernetes.github.io/ingress-nginx/kubectl-plugin/#backends
+    kubectl ingress-nginx backends -n kube-system
 
-# dump the generated nginx.conf
-# https://kubernetes.github.io/ingress-nginx/kubectl-plugin/#conf
-kubectl ingress-nginx conf -n kube-system --host foo.bar.com
+    # dump the generated nginx.conf
+    # https://kubernetes.github.io/ingress-nginx/kubectl-plugin/#conf
+    kubectl ingress-nginx conf -n kube-system --host foo.bar.com
 
-# list ingress definitions
-# https://kubernetes.github.io/ingress-nginx/kubectl-plugin/#ingresses
-kubectl ingress-nginx ingresses --all-namespaces
+    # list ingress definitions
+    # https://kubernetes.github.io/ingress-nginx/kubectl-plugin/#ingresses
+    kubectl ingress-nginx ingresses --all-namespaces
 
-# save the nginx conf to tmp
-kubectl exec \
-  -it \
-  -n kube-system \
-  `kubectl get pods -n kube-system | grep nginx-ingress-controller | awk '{print $1}'` \
-  cat /etc/nginx/nginx.conf \
-  > tmp/tmp.conf
+    # save the nginx conf to tmp
+    kubectl exec \
+    -it \
+    -n kube-system \
+    `kubectl get pods -n kube-system | grep nginx-ingress-controller | awk '{print $1}'` \
+    cat /etc/nginx/nginx.conf \
+    > tmp/tmp.conf
 
-# exec bash
-kubectl exec \
-  -it \
-  -n kube-system \
-  `kubectl get pods -n kube-system | grep nginx-ingress-controller | awk '{print $1}'` \
-  /bin/bash
-```
+    # exec bash
+    kubectl exec \
+    -it \
+    -n kube-system \
+    `kubectl get pods -n kube-system | grep nginx-ingress-controller | awk '{print $1}'` \
+    /bin/bash
 
-#### Cleanup
-
-```bash
-# delete
-kubectl delete -f app.yaml
-```
-
-## Architecture
-
-### name based virtual hosting
-
-```bash
-$ kubectl describe ingress test-ingress
-Name:             test-ingress
-Namespace:        default
-Address:          192.168.64.3
-Default backend:  default-http-backend:80 (<none>)
-Rules:
-  Host         Path  Backends
-  ----         ----  --------
-  foo.bar.com
-                  service1:80 (172.17.0.10:8080,172.17.0.9:8080)
-  bar.foo.com
-                  service2:80 (172.17.0.10:8080,172.17.0.9:8080)
-Annotations:
-  kubectl.kubernetes.io/last-applied-configuration:  {"apiVersion":"extensions/v1beta1","kind":"Ingress","metadata":{"annotations":{"nginx.ingress.kubernetes.io/ssl-redirect":"\\\"false\\\""},"name":"test-ingress","namespace":"default"},"spec":{"rules":[{"host":"foo.bar.com","http":{"paths":[{"backend":{"serviceName":"service1","servicePort":80}}]}},{"host":"bar.foo.com","http":{"paths":[{"backend":{"serviceName":"service2","servicePort":80}}]}}]}}
-
-  nginx.ingress.kubernetes.io/ssl-redirect:  \"false\"
-Events:
-  Type    Reason  Age   From                      Message
-  ----    ------  ----  ----                      -------
-  Normal  CREATE  41m   nginx-ingress-controller  Ingress default/test-ingress
-  Normal  UPDATE  40m   nginx-ingress-controller  Ingress default/test-ingress
-```
-
-### path based virtual hosting
-
-```bash
-$ kubectl describe ingress test-ingress
-Name:             test-ingress
-Namespace:        default
-Address:
-Default backend:  default-http-backend:80 (<none>)
-Rules:
-  Host         Path  Backends
-  ----         ----  --------
-  foo.bar.com
-               /foo   service1:80 (172.17.0.7:8080,172.17.0.8:8080)
-               /bar   service1:80 (172.17.0.7:8080,172.17.0.8:8080)
-Annotations:
-  kubectl.kubernetes.io/last-applied-configuration:  {"apiVersion":"extensions/v1beta1","kind":"Ingress","metadata":{"annotations":{"nginx.ingress.kubernetes.io/ssl-redirect":"\\\"false\\\""},"name":"test-ingress","namespace":"default"},"spec":{"rules":[{"host":"foo.bar.com","http":{"paths":[{"backend":{"serviceName":"service1","servicePort":80},"path":"/foo"},{"backend":{"serviceName":"service1","servicePort":80},"path":"/bar"}]}}]}}
-
-  nginx.ingress.kubernetes.io/ssl-redirect:  \"false\"
-Events:
-  Type    Reason  Age   From                      Message
-  ----    ------  ----  ----                      -------
-  Normal  CREATE  3s    nginx-ingress-controller  Ingress default/test-ingress
-```
+    # delete
+    kubectl delete -f app.yaml
