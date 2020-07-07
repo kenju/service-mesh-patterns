@@ -2,8 +2,7 @@
 
 Change to the context you use
 
-    # for docker desktop for mac
-    kubectl use-context docker-desktop
+    kubectl use-context docker-desktop # for docker desktop for mac
 
 Check whether RBAC is enabled within your cluster
 
@@ -15,10 +14,7 @@ Build Docker Image
 
 Deploy k8s components
 
-    kubectl apply -f api.yaml
-    kubectl apply -f elasticsearch.yaml
-    kubectl apply -f fluentd.yaml
-    kubectl apply -f kibana.yaml
+    kubectl apply --kustomize .
 
 List pods
 
@@ -54,7 +50,7 @@ Exec bash on pods
 
 Delete k8s components
 
-    kubectl delete -f api.yaml
+    kubectl delete --kustomize .
 
 ## References
 ### Fluentd

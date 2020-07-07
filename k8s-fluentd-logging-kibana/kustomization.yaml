@@ -1,0 +1,5 @@
+resources:
+  - api.yaml
+  - elasticsearch.yaml
+  - fluentd.yaml
+  - kibana.yaml
