@@ -70,7 +70,7 @@ func (bs *backendServer) Hello(
 ) (*backend_services_v1.HelloResponse, error) {
 	log.WithFields(log.Fields{
 		"request": req,
-	}).Info("Hello()")
+	}).Info("Hello RPC()")
 
 	return &backend_services_v1.HelloResponse{
 		Result: &backend_services_v1.HelloResponse_Success_{

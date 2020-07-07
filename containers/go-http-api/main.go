@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 	"os"
-	"strconv"
+
+	log "github.com/sirupsen/logrus"
 )
 
 const (
@@ -30,16 +30,6 @@ func getEnv(key, defaultVal string) string {
 		return defaultVal
 	}
 	return v
-}
-
-func getEnvAsInt(key string, defaultVal int) (int, error) {
-	v := os.Getenv(key)
-	if len(v) == 0 {
-		return defaultVal, nil
-	}
-
-	i, err := strconv.Atoi(v)
-	return i, err
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
