@@ -46,7 +46,9 @@ func main() {
 	backend_services_v1.RegisterHelloServiceServer(server, newBackendServer())
 
 	reflection.Register(server)
-	server.Serve(listenPort)
+	if err := server.Serve(listenPort); err != nil {
+		panic(err)
+	}
 }
 
 func getEnv(key, defaultVal string) string {
