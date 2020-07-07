@@ -33,7 +33,7 @@ func getEnv(key, defaultVal string) string {
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
-	fmt.Printf("header: %+v\n", r.Header)
-	res := fmt.Sprintf("ACK from backend(Host=%s)\n", r.Host)
-	fmt.Fprintf(w, res)
+	log.Printf("Header=%s\n", r.Header)
+	log.Printf("Host=%s\n", r.Host)
+	fmt.Fprintf(w, "ACK from backend\n")
 }
