@@ -4,11 +4,11 @@ build:
 
 .PHONY: apply
 apply:
-	kubectl apply -k .
+	kubectl apply -k ./overlays/development
 
 .PHONY: delete
 delete:
-	kubectl delete -k .
+	kubectl delete -k ./overlays/development
 
 .PHONY: curl
 curl:
