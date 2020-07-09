@@ -3,7 +3,7 @@ build:
 	docker build -t fluentd-kubernetes-daemonset:k8s-volume ./fluentd
 
 .PHONY: apply
-apply:
+apply: build
 	kubectl apply -k ./overlays/development
 
 .PHONY: delete
