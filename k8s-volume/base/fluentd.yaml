@@ -33,16 +33,21 @@ spec:
             cpu: 100m
             memory: 200Mi
         volumeMounts:
-        - name: varlog
-          mountPath: /var/log
+        - name: varlogcontainers
+          mountPath: /var/log/containers
+        - name: varlogpods
+          mountPath: /var/log/pods
         - name: varlibdockercontainers
           mountPath: /var/lib/docker/containers
           readOnly: true
       terminationGracePeriodSeconds: 30
       volumes:
-      - name: varlog
+      - name: varlogcontainers # symlink to /var/log/pods
         hostPath:
-          path: /var/log
+          path: /var/log/containers
+      - name: varlogpods # symlink to /var/lib/docker/containers/
+        hostPath:
+          path: /var/log/pods
       - name: varlibdockercontainers
         hostPath:
           path: /var/lib/docker/containers
