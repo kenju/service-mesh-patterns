@@ -29,6 +29,7 @@ RUN buildDeps="sudo make gcc g++ libc-dev libffi-dev" \
     && rm -rf /tmp/* /var/tmp/* /usr/lib/ruby/gems/*/cache/*.gem
 
 COPY ./conf/fluent.conf /fluentd/etc/
+COPY ./conf/prometheus.conf /fluentd/etc/
 RUN touch /fluentd/etc/disable.conf
 
 COPY entrypoint.sh /fluentd/entrypoint.sh
