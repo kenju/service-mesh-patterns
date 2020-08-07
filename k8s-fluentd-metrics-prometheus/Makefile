@@ -9,3 +9,7 @@ apply:
 .PHONY: delete
 delete:
 	kubectl delete -k ./overlays/development
+
+.PHONY: rollout
+rollout:
+	kubectl rollout restart deployment prometheus

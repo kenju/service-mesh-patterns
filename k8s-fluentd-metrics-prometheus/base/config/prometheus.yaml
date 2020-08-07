@@ -1,18 +1,10 @@
 global:
-  scrape_interval: 15s
-  evaluation_interval: 15s
-
-## Rule files specifies a list of globs. Rules and alerts are read from
-## all matching files.
-#rule_files:
-#  - "/etc/prometheus/*_rule.yml"
-
+  scrape_interval: '15s'
+  evaluation_interval: '15s'
 scrape_configs:
-  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
-  - job_name: "prometheus"
-
-    # metrics_path defaults to '/metrics'
-    # scheme defaults to 'http'.
-
+  - job_name: 'prometheus'
     static_configs:
-      - targets: ["localhost:9090"]
+      - targets: ['localhost:9090']
+  - job_name: 'fluentd-logging'
+    kubernetes_sd_configs:
+      - role: 'pod'
