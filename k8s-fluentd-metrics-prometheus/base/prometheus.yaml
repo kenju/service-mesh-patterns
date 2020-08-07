@@ -21,7 +21,6 @@ spec:
   selector:
     matchLabels:
       app: prometheus
-  replicas: 1
   template:
     metadata:
       labels:
