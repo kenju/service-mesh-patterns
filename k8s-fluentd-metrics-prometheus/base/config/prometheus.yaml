@@ -15,3 +15,15 @@ scrape_configs:
           - '__meta_kubernetes_pod_container_port_name'
         regex: 'default;fluentd;http'
         action: 'keep'
+      - source_labels:
+          - '__meta_kubernetes_pod_container_name'
+        target_label: 'kubernetes_container_name'
+      - source_labels:
+          - '__meta_kubernetes_namespace'
+        target_label: 'kubernetes_namespace'
+      - source_labels:
+          - '__meta_kubernetes_pod_name'
+        target_label: 'instance'
+      - source_labels:
+          - '__meta_kubernetes_pod_node_name'
+        target_label: 'kubernetes_node_name'
