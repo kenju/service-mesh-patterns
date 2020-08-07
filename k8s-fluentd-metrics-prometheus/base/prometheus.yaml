@@ -1,0 +1,94 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: prometheus
+  namespace: default
+spec:
+  type: NodePort
+  selector:
+    app: prometheus
+  ports:
+    - protocol: "TCP"
+      port: 9090
+      targetPort: 9090
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: prometheus
+  namespace: default
+spec:
+  selector:
+    matchLabels:
+      app: prometheus
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: prometheus
+    spec:
+      containers:
+        - name: prometheus
+          image: prom/prometheus:latest
+          args:
+            [
+              "--config.file=/config/prometheus.yaml",
+              "--storage.tsdb.path=/prometheus/",
+              "--storage.tsdb.retention.time=15d",
+              "--web.console.libraries=/etc/prometheus/console_libraries",
+              "--web.console.templates=/etc/prometheus/consoles",
+              "--query.timeout=2m",
+              "--query.max-concurrency=20",
+              "--web.external-url=http://localhost:9090",
+            ]
+          ports:
+            - containerPort: 9090
+              name: http
+              protocol: TCP
+          volumeMounts:
+            - name: config-volume
+              mountPath: /config
+      serviceAccount: prometheus
+      volumes:
+        - name: config-volume
+          configMap:
+            name: prometheus-config
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: prometheus
+  namespace: default
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRole
+metadata:
+  name: prometheus
+  namespace: default
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - nodes
+  - nodes/proxy
+  - services
+  - endpoints
+  - pods
+  verbs:
+  - get
+  - list
+  - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1beta1
+kind: ClusterRoleBinding
+metadata:
+  name: prometheus
+  namespace: default
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: prometheus
+subjects:
+- kind: ServiceAccount
+  name: prometheus
+  namespace: default

@@ -1,0 +1,5 @@
+source "https://rubygems.org"
+
+gem "fluentd", "1.10.4"
+gem "fluent-plugin-prometheus", "~> 1.8.2"
+gem "ffi"

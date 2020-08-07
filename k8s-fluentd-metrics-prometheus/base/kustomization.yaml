@@ -1,0 +1,7 @@
+resources:
+  - fluentd.yaml
+  - prometheus.yaml
+configMapGenerator:
+  - name: prometheus-config
+    files:
+      - ./config/prometheus.yaml
