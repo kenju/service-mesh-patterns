@@ -28,6 +28,10 @@ spec:
           requests:
             cpu: 100m
             memory: 200Mi
+        ports:
+          - containerPort: 24231
+            name: http
+            protocol: TCP
         volumeMounts:
         - name: varlog
           mountPath: /var/log
