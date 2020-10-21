@@ -22,6 +22,9 @@ log:
   level: 'INFO'
 accessLog:
   filePath: '/dev/stdout'
+api:
+  dashboard: true
+  insecure: true
 entryPoints:
   web:
     address: ':8081'

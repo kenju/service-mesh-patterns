@@ -29,8 +29,9 @@ services:
     networks:
     - mesh
     ports:
-    - "8081:8081"
-    - "8082:8082"
+    - "8080:8080" # Dashboard https://doc.traefik.io/traefik/operations/dashboard/
+    - "8081:8081" # Web Entrypoint
+    - "8082:8082" # Metrics Entrypoint
 
 networks:
   mesh:
