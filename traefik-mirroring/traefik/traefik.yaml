@@ -1,9 +1,35 @@
+global:
+  checkNewVersion: false
+  sendAnonymousUsage: false
+metrics:
+  # @doc https://doc.traefik.io/traefik/observability/metrics/prometheus/
+  prometheus:
+    entryPoint: metrics
+    buckets:
+    - 0.005
+    - 0.01
+    - 0.025
+    - 0.05
+    - 0.1
+    - 0.25
+    - 0.3
+    - 0.5
+    - 1.0
+    - 2.5
+    - 5.0
+    - 10.0
+log:
+  level: 'INFO'
+accessLog:
+  filePath: '/dev/stdout'
 entryPoints:
   web:
-    address: ':80'
+    address: ':8081'
+  metrics:
+    address: ":8082"
 providers:
   file:
-    directory: /etc/traefik
+    directory: '/etc/traefik'
     watch: false
 http:
   routers:

@@ -29,7 +29,8 @@ services:
     networks:
     - mesh
     ports:
-    - "18000:80"
+    - "8081:8081"
+    - "8082:8082"
 
 networks:
   mesh:
