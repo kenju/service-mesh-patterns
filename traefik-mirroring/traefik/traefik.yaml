@@ -8,7 +8,7 @@ providers:
 http:
   routers:
     app-router:
-      rule: Path(`/hello`)
+      rule: Query(`mirror=1`)
       service: mirrored-api
   services:
     mirrored-api:
@@ -17,11 +17,11 @@ http:
         mirrors:
         - name: backend2
           percent: 100
-    appv1:
+    backend1:
       loadBalancer:
         servers:
-        - url: 'http://backend1:8001/hello'
-    appv2:
+        - url: 'http://backend1:8001/'
+    backend2:
       loadBalancer:
         servers:
-        - url: 'http://backennd2:8002/hello'
+        - url: 'http://backend2:8002/'
