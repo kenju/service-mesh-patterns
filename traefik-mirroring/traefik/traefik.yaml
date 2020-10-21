@@ -1,0 +1,27 @@
+entryPoints:
+  web:
+    address: ':80'
+providers:
+  file:
+    directory: /etc/traefik
+    watch: false
+http:
+  routers:
+    app-router:
+      rule: Path(`/hello`)
+      service: mirrored-api
+  services:
+    mirrored-api:
+      mirroring:
+        service: backend1
+        mirrors:
+        - name: backend2
+          percent: 100
+    appv1:
+      loadBalancer:
+        servers:
+        - url: 'http://backend1:8001/hello'
+    appv2:
+      loadBalancer:
+        servers:
+        - url: 'http://backennd2:8002/hello'
