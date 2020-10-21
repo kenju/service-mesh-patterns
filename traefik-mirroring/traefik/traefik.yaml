@@ -33,9 +33,16 @@ providers:
     watch: false
 http:
   routers:
-    app-router:
+    mirror-router:
       rule: Query(`mirror=1`)
       service: mirrored-api
+      middlewares:
+      - appendHeader
+  middlewares:
+    appendHeader:
+      headers:
+        customRequestHeaders:
+          X-Mirrored: "true"
   services:
     mirrored-api:
       mirroring:
