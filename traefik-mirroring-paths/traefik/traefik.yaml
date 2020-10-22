@@ -1,0 +1,63 @@
+global:
+  checkNewVersion: false
+  sendAnonymousUsage: false
+metrics:
+  # @doc https://doc.traefik.io/traefik/observability/metrics/prometheus/
+  prometheus:
+    entryPoint: metrics
+    buckets:
+    - 0.005
+    - 0.01
+    - 0.025
+    - 0.05
+    - 0.1
+    - 0.25
+    - 0.3
+    - 0.5
+    - 1.0
+    - 2.5
+    - 5.0
+    - 10.0
+log:
+  level: 'WARN'
+api:
+  dashboard: true
+  insecure: true
+entryPoints:
+  web:
+    address: ':8081'
+  metrics:
+    address: ":8082"
+providers:
+  file:
+    directory: '/etc/traefik'
+    watch: false
+http:
+  routers:
+    hello-router:
+      rule: Path(`/hello`)
+      service: hello
+    bye-router:
+      rule: PathPrefix(`/bye`)
+      service: bye
+  services:
+    hello:
+      mirroring:
+        service: backend1
+        mirrors:
+        - name: backend2
+          percent: 100
+    bye:
+      mirroring:
+        service: backend1
+        mirrors:
+        - name: backend2
+          percent: 10
+    backend1:
+      loadBalancer:
+        servers:
+        - url: 'http://backend1:8001/'
+    backend2:
+      loadBalancer:
+        servers:
+        - url: 'http://backend2:8002/'
