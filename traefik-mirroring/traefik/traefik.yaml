@@ -53,6 +53,8 @@ http:
         mirrors:
         - name: backend2
           percent: 100
+        - name: backend3
+          percent: 100
     backend1:
       loadBalancer:
         servers:
@@ -61,3 +63,7 @@ http:
       loadBalancer:
         servers:
         - url: 'http://backend2:8002/'
+    backend3:
+      loadBalancer:
+        servers:
+        - url: 'http://backend3:8003/'

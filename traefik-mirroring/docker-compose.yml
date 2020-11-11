@@ -23,6 +23,17 @@ services:
     environment:
     - ADDR=:8002
 
+  backend3:
+    image: kenju/go-http-api:latest
+    expose:
+    - '8003'
+    networks:
+    - mesh
+    ports:
+    - '8003:8003'
+    environment:
+    - ADDR=:8003
+
   traefik:
     build:
       context: './traefik'
