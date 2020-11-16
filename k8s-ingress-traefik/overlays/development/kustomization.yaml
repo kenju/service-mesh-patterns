@@ -1,0 +1,4 @@
+bases:
+- ../../base/traefik
+patches:
+- ingress.yaml

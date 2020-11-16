@@ -1,0 +1,26 @@
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: myingress
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: web
+
+spec:
+  rules:
+    - host: example.com
+      http:
+        paths:
+          - path: /bar
+            pathType: Prefix
+            backend:
+              service:
+                name: whoami
+                port:
+                  number: 80
+          - path: /foo
+            pathType: Prefix
+            backend:
+              service:
+                name: whoami
+                port:
+                  number: 80
