@@ -7,6 +7,14 @@ https://doc.traefik.io/traefik/routing/providers/kubernetes-ingress/
 - https://kubernetes.io/docs/concepts/services-networking/ingress/
 - https://doc.traefik.io/traefik/routing/providers/kubernetes-ingress/
 
+## Start
+
+- https://kubernetes.io/docs/tasks/access-application-cluster/ingress-minikube/
+
+```
+minikube start --vm=true
+```
+
 ## Install
 
 - https://doc.traefik.io/traefik/getting-started/install-traefik/#use-the-helm-chart
