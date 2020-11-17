@@ -17,7 +17,7 @@ spec:
         port: 8080
       middlewares:
         - name: modify-header
-    - match: PathPrefix(`/foo`)
+    - match: PathPrefix(`/foo`) && Query(`foo=bar`)
       kind: Rule
       services:
       - kind: Service
