@@ -2,7 +2,7 @@
 apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:
-  name: latency-check-foo
+  name: latency-check-easy
   namespace: default
 spec:
   circuitBreaker:
@@ -12,11 +12,12 @@ spec:
 apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:
-  name: latency-check-bar
+  name: latency-check-harsh
   namespace: default
 spec:
   circuitBreaker:
-    expression: LatencyAtQuantileMS(50.0) > 100
+    # NOTE: deliberately return error
+    expression: LatencyAtQuantileMS(50.0) > 0
 
 ---
 apiVersion: traefik.containo.us/v1alpha1

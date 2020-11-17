@@ -25,7 +25,7 @@ spec:
         port: 80
       middlewares:
         - name: modify-header
-        - name: latency-check-foo
+        - name: latency-check-easy
     - match: PathPrefix(`/bar`)
       kind: Rule
       services:
@@ -35,4 +35,13 @@ spec:
         port: 80
       middlewares:
         - name: modify-header
-        - name: latency-check-bar
+        - name: latency-check-easy
+    - match: PathPrefix(`/end`)
+      kind: Rule
+      services:
+      - kind: Service
+        name: whoami
+        passHostHeader: true
+        port: 80
+      middlewares:
+        - name: latency-check-harsh
