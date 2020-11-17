@@ -26,8 +26,7 @@ spec:
         port: 80
       middlewares:
         - name: modify-header
-        - name: latency-check
-        - name: add-prefix
+        - name: latency-check-foo
     - match: PathPrefix(`/bar`)
       kind: Rule
       services:
@@ -37,5 +36,4 @@ spec:
         port: 80
       middlewares:
         - name: modify-header
-        - name: latency-check
-        - name: add-prefix
+        - name: latency-check-bar
