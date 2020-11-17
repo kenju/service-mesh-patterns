@@ -6,6 +6,7 @@ https://doc.traefik.io/traefik/routing/providers/kubernetes-ingress/
 
 - https://kubernetes.io/docs/concepts/services-networking/ingress/
 - https://doc.traefik.io/traefik/routing/providers/kubernetes-ingress/
+- https://doc.traefik.io/traefik/v2.3/user-guides/crd-acme/#cluster-resources
 
 ## Start
 

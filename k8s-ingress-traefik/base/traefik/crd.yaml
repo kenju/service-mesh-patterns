@@ -1,0 +1,73 @@
+# https://doc.traefik.io/traefik/v2.3/user-guides/crd-acme/#cluster-resources
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: ingressroutes.traefik.containo.us
+
+spec:
+  group: traefik.containo.us
+  versions:
+  - name: v1alpha1
+    served: true
+    storage: true
+    schema:
+      openAPIV3Schema:
+        type: object
+        properties:
+          spec:
+            type: object
+  names:
+    kind: IngressRoute
+    plural: ingressroutes
+    singular: ingressroute
+  scope: Namespaced
+
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: middlewares.traefik.containo.us
+
+spec:
+  group: traefik.containo.us
+  versions:
+  - name: v1alpha1
+    served: true
+    storage: true
+    schema:
+      openAPIV3Schema:
+        type: object
+        properties:
+          spec:
+            type: object
+            properties:
+              addPrefix:
+                type: object
+                properties:
+                  prefix:
+                    type: string
+              circuitBreaker:
+                type: object
+                properties:
+                  expression:
+                    type: string
+              headers:
+                type: object
+                properties:
+                  customRequestHeaders:
+                    type: object
+                    properties:
+                      X-Script-Name:
+                        type: string
+                  customResponseHeaders:
+                    type: object
+                    properties:
+                      X-Custom-Response-Header:
+                        type: string
+
+  names:
+    kind: Middleware
+    plural: middlewares
+    singular: middleware
+  scope: Namespaced

@@ -1,3 +1,8 @@
+.PHONY: curl
+curl:
+	curl "example.com/foo"
+	curl "example.com/bar"
+
 .PHONY: apply
 apply:
 	kubectl apply -k ./overlays/development
