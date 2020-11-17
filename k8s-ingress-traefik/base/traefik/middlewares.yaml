@@ -2,7 +2,17 @@
 apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:
-  name: latency-check
+  name: latency-check-foo
+  namespace: default
+spec:
+  circuitBreaker:
+    expression: LatencyAtQuantileMS(50.0) > 100
+
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: latency-check-bar
   namespace: default
 spec:
   circuitBreaker:
@@ -20,13 +30,3 @@ spec:
       X-Script-Name: "test"
     customResponseHeaders:
       X-Custom-Response-Header: "value"
-
----
-apiVersion: traefik.containo.us/v1alpha1
-kind: Middleware
-metadata:
-  name: add-prefix
-  namespace: default
-spec:
-  addPrefix:
-    prefix: /prefixed
