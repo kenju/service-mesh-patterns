@@ -13,8 +13,7 @@ delete:
 
 .PHONY: start
 start:
-	minikube start --vm=true
-	minikube addons enable ingress
+	minikube start
 
 .PHONY: cleanup
 cleanup: delete
