@@ -5,6 +5,7 @@ resources:
   - go-http-api.yaml
   - ingress.yaml
   - middlewares.yaml
+  - mirroring.yaml
   - rbac.yaml
   - traefik.yaml
   - whoami.yaml

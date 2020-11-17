@@ -5,7 +5,6 @@ metadata:
   labels:
     app: myapp
     name: go-http-api
-
 spec:
   replicas: 1
   selector:
@@ -29,7 +28,6 @@ apiVersion: v1
 kind: Service
 metadata:
   name: go-http-api
-
 spec:
   ports:
     - name: http
@@ -37,3 +35,42 @@ spec:
   selector:
     app: myapp
     task: go-http-api
+
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: go-http-api-staging
+  labels:
+    app: myapp
+    name: go-http-api-staging
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: myapp
+      task: go-http-api-staging
+  template:
+    metadata:
+      labels:
+        app: myapp
+        task: go-http-api-staging
+    spec:
+      containers:
+        - name: go-http-api-staging
+          image: kenju/go-http-api
+          ports:
+            - containerPort: 8080
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: go-http-api-staging
+spec:
+  ports:
+    - name: http
+      port: 8080
+  selector:
+    app: myapp
+    task: go-http-api-staging

@@ -1,0 +1,14 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: TraefikService
+metadata:
+  name: mirroring-go-api
+  namespace: default
+
+spec:
+  mirroring:
+    name: go-http-api
+    port: 8080
+    mirrors:
+      - name: go-http-api-staging
+        port: 8080
+        percent: 100

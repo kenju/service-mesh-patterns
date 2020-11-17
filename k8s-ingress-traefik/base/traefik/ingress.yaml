@@ -12,9 +12,8 @@ spec:
     - match: PathPrefix(`/go`)
       kind: Rule
       services:
-      - kind: Service
-        name: go-http-api
-        port: 8080
+      - kind: TraefikService
+        name: mirroring-go-api
       middlewares:
         - name: modify-header
     - match: PathPrefix(`/foo`) && Query(`foo=bar`)
