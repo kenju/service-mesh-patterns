@@ -1,49 +1,5 @@
-kind: Ingress
-apiVersion: networking.k8s.io/v1
-metadata:
-  name: traefik-ingress
-  namespace: default
-  annotations:
-    traefik.ingress.kubernetes.io/router.entrypoints: web
-    # NOTE:
-    # https://github.com/traefik/traefik/issues/6674
-    # https://community.traefik.io/t/how-to-configure-middleware-with-kubernetes-ingress-middleware-xyz-does-not-exist/5016
-    traefik.ingress.kubernetes.io/router.middlewares: default-latency-check@kubernetescrd,default-modify-header@kubernetescrd,default-add-prefix@kubernetescrd
-
-spec:
-  rules:
-    - host: example.com
-      http:
-        paths:
-          - path: /admin
-            pathType: Prefix
-            backend:
-              service:
-                name: traefik
-                port:
-                  number: 8080
-          - path: /bar
-            pathType: Prefix
-            backend:
-              service:
-                name: whoami
-                port:
-                  number: 80
-          - path: /foo
-            pathType: Prefix
-            backend:
-              service:
-                name: whoami
-                port:
-                  number: 80
-          - path: /api
-            pathType: Prefix
-            backend:
-              service:
-                name: go-http-api
-                port:
-                  number: 8080
-
+# NOTE: IngressRoute PoC
+# https://doc.traefik.io/traefik/routing/providers/kubernetes-crd/
 ---
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
@@ -54,7 +10,80 @@ spec:
   entryPoints:
     - web
   routes:
-    middlewares:
-      - name: modify-header
-      - name: latency-check
-      - name: add-prefix
+    - match: Host(`example.com`) && PathPrefix(`/admin`)
+      kind: Rule
+      services:
+      - name: trarefik
+        port: 8080
+    - match: Host(`example.com`) && PathPrefix(`/foo`)
+      kind: Rule
+      services:
+      - kind: Service
+        name: whoami
+        namespace: default
+        passHostHeader: true
+        port: 80
+      middlewares:
+        - name: modify-header
+        - name: latency-check
+        - name: add-prefix
+    - match: Host(`example.com`) && PathPrefix(`/bar`)
+      kind: Rule
+      services:
+      - kind: Service
+        name: whoami
+        namespace: default
+        passHostHeader: true
+        port: 80
+      middlewares:
+        - name: modify-header
+        - name: latency-check
+        - name: add-prefix
+
+# # NOTE: Here is the example using `king: Ingress`
+# ---
+# kind: Ingress
+# apiVersion: networking.k8s.io/v1
+# metadata:
+#   name: traefik-ingress
+#   namespace: default
+#   annotations:
+#     traefik.ingress.kubernetes.io/router.entrypoints: web
+#     # NOTE:
+#     # https://github.com/traefik/traefik/issues/6674
+#     # https://community.traefik.io/t/how-to-configure-middleware-with-kubernetes-ingress-middleware-xyz-does-not-exist/5016
+#     traefik.ingress.kubernetes.io/router.middlewares: default-latency-check@kubernetescrd,default-modify-header@kubernetescrd,default-add-prefix@kubernetescrd
+
+# spec:
+#   rules:
+#     - host: example.com
+#       http:
+#         paths:
+#           - path: /admin
+#             pathType: Prefix
+#             backend:
+#               service:
+#                 name: traefik
+#                 port:
+#                   number: 8080
+#           - path: /bar
+#             pathType: Prefix
+#             backend:
+#               service:
+#                 name: whoami
+#                 port:
+#                   number: 80
+#           - path: /foo
+#             pathType: Prefix
+#             backend:
+#               service:
+#                 name: whoami
+#                 port:
+#                   number: 80
+#           - path: /api
+#             pathType: Prefix
+#             backend:
+#               service:
+#                 name: go-http-api
+#                 port:
+#                   number: 8080
