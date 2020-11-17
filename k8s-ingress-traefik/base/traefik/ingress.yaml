@@ -4,23 +4,24 @@
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
-  name: ingressroute
-  namespace: default
+  name: myingressroute
 spec:
   entryPoints:
     - web
   routes:
-    - match: Host(`example.com`) && PathPrefix(`/admin`)
+    - match: PathPrefix(`/go`)
       kind: Rule
       services:
-      - name: trarefik
+      - kind: Service
+        name: go-http-api
         port: 8080
-    - match: Host(`example.com`) && PathPrefix(`/foo`)
+      middlewares:
+        - name: modify-header
+    - match: PathPrefix(`/foo`)
       kind: Rule
       services:
       - kind: Service
         name: whoami
-        namespace: default
         passHostHeader: true
         port: 80
       middlewares:
@@ -32,7 +33,6 @@ spec:
       services:
       - kind: Service
         name: whoami
-        namespace: default
         passHostHeader: true
         port: 80
       middlewares:

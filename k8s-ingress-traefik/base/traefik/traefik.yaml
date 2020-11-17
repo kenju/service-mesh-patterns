@@ -2,14 +2,12 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: traefik-ingress-controller
-  namespace: default
 
 ---
 kind: Deployment
 apiVersion: apps/v1
 metadata:
   name: traefik
-  namespace: default
   labels:
     app: traefik
 
@@ -31,20 +29,24 @@ spec:
             - --api
             - --api.insecure
             - --entrypoints.web.address=:80
-            - --providers.kubernetescrd=true
-            - --providers.kubernetesingress=true
+            - --entrypoints.tcpep.address=:8000
+            - --entrypoints.udpep.address=:9000/udp
+            - --providers.kubernetescrd
           ports:
             - name: web
               containerPort: 80
             - name: admin
               containerPort: 8080
+            - name: tcpep
+              containerPort: 8000
+            - name: udpep
+              containerPort: 9000
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: traefik
-  namespace: default
 spec:
   type: LoadBalancer
   selector:
@@ -58,3 +60,22 @@ spec:
       port: 8080
       name: admin
       targetPort: 8080
+    - protocol: TCP
+      port: 8000
+      name: tcpep
+      targetPort: 8000
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: traefikudp
+spec:
+  type: LoadBalancer
+  selector:
+    app: traefik
+  ports:
+    - protocol: UDP
+      port: 9000
+      name: udpep
+      targetPort: 9000
