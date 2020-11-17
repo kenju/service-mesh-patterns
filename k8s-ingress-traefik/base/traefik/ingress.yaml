@@ -9,7 +9,15 @@ spec:
   entryPoints:
     - web
   routes:
-    - match: PathPrefix(`/foo`) && Query(`foo=bar`)
+    - match: PathPrefix(`/go`)
+      kind: Rule
+      services:
+      - kind: Service
+        name: go-http-api
+        port: 8080
+      middlewares:
+        - name: modify-header
+    - match: PathPrefix(`/foo`)
       kind: Rule
       services:
       - kind: Service
@@ -18,7 +26,8 @@ spec:
         port: 80
       middlewares:
         - name: modify-header
-        - name: latency-check-foo
+        - name: latency-check
+        - name: add-prefix
     - match: PathPrefix(`/bar`)
       kind: Rule
       services:
@@ -28,4 +37,5 @@ spec:
         port: 80
       middlewares:
         - name: modify-header
-        - name: latency-check-bar
+        - name: latency-check
+        - name: add-prefix
