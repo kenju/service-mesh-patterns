@@ -36,6 +36,13 @@ spec:
                 name: whoami
                 port:
                   number: 80
+          - path: /api
+            pathType: Prefix
+            backend:
+              service:
+                name: go-http-api
+                port:
+                  number: 8080
 
 ---
 apiVersion: traefik.containo.us/v1alpha1
