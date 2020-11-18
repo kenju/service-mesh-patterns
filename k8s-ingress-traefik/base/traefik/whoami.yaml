@@ -2,7 +2,7 @@ kind: Deployment
 apiVersion: apps/v1
 metadata:
   name: whoami
-  namespace: default
+  namespace: traefik-ingress-router
   labels:
     app: traefiklabs
     name: whoami
@@ -30,7 +30,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: whoami
-  namespace: default
+  namespace: traefik-ingress-router
 
 spec:
   ports:

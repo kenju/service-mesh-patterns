@@ -3,7 +3,7 @@ apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:
   name: latency-check-easy
-  namespace: default
+  namespace: traefik-ingress-router
 spec:
   circuitBreaker:
     expression: LatencyAtQuantileMS(50.0) > 100
@@ -13,7 +13,7 @@ apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:
   name: latency-check-harsh
-  namespace: default
+  namespace: traefik-ingress-router
 spec:
   circuitBreaker:
     # NOTE: deliberately return error
@@ -24,7 +24,7 @@ apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:
   name: modify-header
-  namespace: default
+  namespace: traefik-ingress-router
 spec:
   headers:
     customRequestHeaders:

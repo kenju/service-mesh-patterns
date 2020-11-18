@@ -2,6 +2,7 @@ kind: Deployment
 apiVersion: apps/v1
 metadata:
   name: go-http-api
+  namespace: traefik-ingress-router
   labels:
     app: myapp
     name: go-http-api
@@ -28,6 +29,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: go-http-api
+  namespace: traefik-ingress-router
 spec:
   ports:
     - name: http
@@ -41,6 +43,7 @@ kind: Deployment
 apiVersion: apps/v1
 metadata:
   name: go-http-api-staging
+  namespace: traefik-ingress-router
   labels:
     app: myapp
     name: go-http-api-staging
@@ -67,6 +70,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: go-http-api-staging
+  namespace: traefik-ingress-router
 spec:
   ports:
     - name: http

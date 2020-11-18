@@ -1,10 +1,8 @@
-# NOTE: IngressRoute PoC
-# https://doc.traefik.io/traefik/routing/providers/kubernetes-crd/
----
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute
 metadata:
-  name: myingressroute
+  name: traefik-ingress-router
+  namespace: traefik-ingress-router
 spec:
   entryPoints:
     - web

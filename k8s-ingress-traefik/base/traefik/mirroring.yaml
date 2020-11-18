@@ -2,7 +2,7 @@ apiVersion: traefik.containo.us/v1alpha1
 kind: TraefikService
 metadata:
   name: mirroring-go-api
-  namespace: default
+  namespace: traefik-ingress-router
 
 spec:
   mirroring:
