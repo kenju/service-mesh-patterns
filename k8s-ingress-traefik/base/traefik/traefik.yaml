@@ -30,12 +30,17 @@ spec:
             - --api.insecure
             - --entrypoints.web.address=:80
             - --providers.kubernetescrd
+            # Metrics https://doc.traefik.io/traefik/observability/metrics/prometheus/
+            - --entryPoints.metrics.address=:8082
+            - --metrics.prometheus.entryPoint=metrics
+            - --metrics.prometheus=true
           ports:
             - name: web
               containerPort: 80
             - name: admin
               containerPort: 8080
-
+            - name: metrics
+              containerPort: 8082
 ---
 apiVersion: v1
 kind: Service
@@ -54,3 +59,7 @@ spec:
       port: 8080
       name: admin
       targetPort: 8080
+    - protocol: TCP
+      port: 8082
+      name: metrics
+      targetPort: 8082
