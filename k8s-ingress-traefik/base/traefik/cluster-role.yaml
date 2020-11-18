@@ -35,6 +35,10 @@ rules:
       - middlewares
       - ingressroutes
       - traefikservices
+      - ingressroutetcps
+      - ingressrouteudps
+      - tlsoptions
+      - tlsstores
     verbs:
       - get
       - list
