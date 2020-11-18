@@ -1,6 +1,14 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
+  - namespace.yaml
+  - traefik-ingressRoute-customResourceDefinition.yaml
+  - traefik-middleware-customResourceDefinition.yaml
+  - traefik-traefikService-customResourceDefinition.yaml
+  - traefik-ingressroutetcp-customResourceDefinition.yaml
+  - traefik-ingressrouteudp-customResourceDefinition.yaml
+  - traefik-tlsoption-customResourceDefinition.yaml
+  - traefik-tlsstore-customResourceDefinition.yaml
   - cluster-role-binding.yaml
   - cluster-role.yaml
   - deployment.yaml
@@ -8,11 +16,6 @@ resources:
   - ingress-route.yaml
   - middlewares.yaml
   - mirroring.yaml
-  - namespace.yaml
   - service-account.yaml
   - service.yaml
-  - traefik-ingressRoute-customResourceDefinition.yaml
-  - traefik-middleware-customResourceDefinition.yaml
-  - traefik-misc-customResourceDefinition.yaml
-  - traefik-traefikService-customResourceDefinition.yaml
   - whoami.yaml
