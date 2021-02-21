@@ -1,5 +1,7 @@
 # service-mesh-patterns
 
+The design patterns of container application deployments
+
 ## Benchmark
 
 sub directory | description
