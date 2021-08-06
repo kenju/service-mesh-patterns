@@ -7,5 +7,5 @@ require (
 	github.com/grpc-ecosystem/go-grpc-middleware v1.3.0
 	github.com/sirupsen/logrus v1.8.1
 	google.golang.org/genproto v0.0.0-20200702021140-07506425bd67 // indirect
-	google.golang.org/grpc v1.38.0
+	google.golang.org/grpc v1.39.1
 )
